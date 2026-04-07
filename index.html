@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/svg+xml" href="assests/logonobg.png">
+  <title>AdaptLearn AI — Personalized Learning AI Assistant</title>
+  <meta name="description" content="Empower your studies with AI-driven, customized learning experiences. Study guides, quizzes, flashcards and more." />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/index.css" />
+</head>
+<body>
+
+<!-- ── Navbar ──────────────────────────────────────────────── -->
+<nav class="navbar" id="navbar">
+  <div class="container navbar__inner">
+    <a href="index.html" class="navbar__logo">
+      <div class="navbar__logo-icon"> <img src="assests/logonobg.png" alt="AdaptLearnAI Logo" /></div>
+      AdaptLearn<span>AI</span>
+    </a>
+
+    <ul class="navbar__links">
+      <li><a href="#hero" class="active">Home</a></li>
+      <li><a href="#features">Features</a></li>
+      <li><a href="#how-it-works">How It Works</a></li>
+      <li><a href="#cta">About</a></li>
+    </ul>
+
+    <div class="navbar__actions">
+      <a href="login.html" class="btn btn-outline btn-sm">Login</a>
+      <a href="register.html" class="btn btn-primary btn-sm">Sign Up</a>
+    </div>
+
+    <div class="hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+</nav>
+
+<!-- ── Hero ────────────────────────────────────────────────── -->
+<section class="hero" id="hero">
+  <div class="hero__bg"></div>
+  <div class="hero__orb hero__orb--1"></div>
+  <div class="hero__orb hero__orb--2"></div>
+  <div class="hero__orb hero__orb--3"></div>
+
+  <div class="container">
+    <div class="hero__content">
+      <!-- Text -->
+      <div class="hero__text">
+        <div class="hero__eyebrow">
+          <span class="hero__eyebrow-dot"></span>
+          AI-Powered Education Platform
+        </div>
+
+        <h1 class="hero__title">
+          Your Personalized<br/>
+          <em>Learning AI</em><br/>
+          Assistant
+        </h1>
+
+        <p class="hero__subtitle">
+          Empower your studies with AI-driven, customized learning experiences.
+          Generate study guides, quizzes, flashcards and get personalized
+          recommendations — all in one place.
+        </p>
+
+        <div class="hero__actions">
+          <a href="register.html" class="btn btn-primary btn-lg">
+            🚀 Get Started Free
+          </a>
+          <a href="#features" class="btn btn-outline btn-lg">
+            Learn More ↓
+          </a>
+        </div>
+
+        <div class="hero__stats">
+          <div>
+            <div class="hero__stat-num">50K<span>+</span></div>
+            <div class="hero__stat-label">Active Students</div>
+          </div>
+          <div>
+            <div class="hero__stat-num">2M<span>+</span></div>
+            <div class="hero__stat-label">Quizzes Generated</div>
+          </div>
+          <div>
+            <div class="hero__stat-num">98<span>%</span></div>
+            <div class="hero__stat-label">Satisfaction Rate</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Visual -->
+      <div class="hero__visual">
+        <div class="hero__badge hero__badge--tl">
+          <div class="hero__badge-icon" style="background:rgba(52,213,200,0.2)">✅</div>
+          <div>
+            <strong style="font-family:var(--font-display);font-size:0.85rem">Quiz Completed</strong>
+            <div style="font-size:0.72rem;color:var(--teal-400)">Score: 94%</div>
+          </div>
+        </div>
+
+        <div class="hero__image-wrap">
+          <img src="https://placehold.co/600x380/0f1135/7b82ff?text=LearnAI+Platform&font=montserrat" alt="LearnAI Platform" />
+          <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(91,99,245,0.1),rgba(139,92,246,0.05));display:flex;align-items:center;justify-content:center;">
+            <div style="text-align:center;padding:32px;">
+              <div style="font-size:5rem;margin-bottom:16px">🤖</div>
+              <div style="font-family:var(--font-display);font-size:1.1rem;font-weight:700;color:var(--text-primary)">AI Learning Assistant</div>
+              <div style="font-size:0.85rem;color:var(--text-secondary);margin-top:6px">Ready to help you learn smarter</div>
+              <div style="margin-top:20px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+                <span class="badge badge-beginner">Study Guides</span>
+                <span class="badge badge-medium">Smart Quizzes</span>
+                <span class="badge badge-advanced">Flashcards</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero__badge hero__badge--br">
+          <div class="hero__badge-icon" style="background:rgba(245,166,35,0.2)">📈</div>
+          <div>
+            <strong style="font-family:var(--font-display);font-size:0.85rem">Progress</strong>
+            <div style="font-size:0.72rem;color:var(--gold-400)">+28% this week</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Feature Strip ────────────────────────────────────────── -->
+<div class="features-strip">
+  <div class="container">
+    <div class="features-strip__inner">
+      <div class="features-strip__item">
+        <div class="features-strip__icon">📖</div>
+        AI-Powered Study Guides
+      </div>
+      <div class="features-strip__item">
+        <div class="features-strip__icon">🎯</div>
+        Smart Quiz Generation
+      </div>
+      <div class="features-strip__item">
+        <div class="features-strip__icon">🃏</div>
+        Dynamic Flashcards
+      </div>
+      <div class="features-strip__item">
+        <div class="features-strip__icon">💡</div>
+        Personalized Recommendations
+      </div>
+      <div class="features-strip__item">
+        <div class="features-strip__icon">📊</div>
+        Track Your Progress
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Features ─────────────────────────────────────────────── -->
+<section class="features" id="features">
+  <div class="container">
+    <div class="section-header" data-animate>
+      <div class="section-tag">✦ Features</div>
+      <h2 class="section-title">Everything You Need to<br/>Study Smarter</h2>
+      <p class="section-subtitle">Our AI-powered platform adapts to your learning style, pace, and goals.</p>
+    </div>
+
+    <div class="features__grid">
+      <div class="feature-card" data-animate data-delay="0s">
+        <div class="feature-card__icon" style="background:rgba(91,99,245,0.15);color:var(--indigo-400)">📚</div>
+        <h3 class="feature-card__title">AI Study Guides</h3>
+        <p class="feature-card__desc">Generate comprehensive, personalized study materials from any topic. Our AI creates summaries, key concepts, and detailed notes tailored to your level.</p>
+        <div class="feature-card__arrow">→</div>
+      </div>
+
+      <div class="feature-card" data-animate data-delay="0.1s">
+        <div class="feature-card__icon" style="background:rgba(52,213,200,0.15);color:var(--teal-400)">🎯</div>
+        <h3 class="feature-card__title">Smart Quiz Generator</h3>
+        <p class="feature-card__desc">Auto-generate quizzes at Beginner, Medium, or Advanced difficulty. Track your scores and identify weak areas instantly with AI feedback.</p>
+        <div class="feature-card__arrow">→</div>
+      </div>
+
+      <div class="feature-card" data-animate data-delay="0.2s">
+        <div class="feature-card__icon" style="background:rgba(245,166,35,0.15);color:var(--gold-400)">🃏</div>
+        <h3 class="feature-card__title">Dynamic Flashcards</h3>
+        <p class="feature-card__desc">Create interactive flashcard decks for any subject. Spaced repetition algorithms ensure you review cards at exactly the right moment.</p>
+        <div class="feature-card__arrow">→</div>
+      </div>
+
+      <div class="feature-card" data-animate data-delay="0.3s">
+        <div class="feature-card__icon" style="background:rgba(139,92,246,0.15);color:var(--violet-400)">💡</div>
+        <h3 class="feature-card__title">Personalized Recommendations</h3>
+        <p class="feature-card__desc">Our AI analyzes your study patterns and quiz results to suggest topics you should focus on next, maximizing your learning efficiency.</p>
+        <div class="feature-card__arrow">→</div>
+      </div>
+
+      <div class="feature-card" data-animate data-delay="0.4s">
+        <div class="feature-card__icon" style="background:rgba(251,113,133,0.15);color:var(--rose-400)">📊</div>
+        <h3 class="feature-card__title">Progress Analytics</h3>
+        <p class="feature-card__desc">Visual dashboards show your learning journey. Monitor quiz scores, study streaks, time spent, and mastery levels across all subjects.</p>
+        <div class="feature-card__arrow">→</div>
+      </div>
+
+      <div class="feature-card" data-animate data-delay="0.5s">
+        <div class="feature-card__icon" style="background:rgba(91,99,245,0.15);color:var(--indigo-400)">🤖</div>
+        <h3 class="feature-card__title">AI Chat Assistant</h3>
+        <p class="feature-card__desc">Ask anything, anytime. Your 24/7 AI tutor can explain concepts, answer questions, and guide you through complex topics in any subject.</p>
+        <div class="feature-card__arrow">→</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── How It Works ─────────────────────────────────────────── -->
+<section class="how-it-works" id="how-it-works">
+  <div class="container">
+    <div class="section-header" data-animate>
+      <div class="section-tag">✦ Process</div>
+      <h2 class="section-title">How LearnAI Works</h2>
+      <p class="section-subtitle">Start learning smarter in just three simple steps.</p>
+    </div>
+
+    <div class="steps-grid">
+      <div class="step glass-card" data-animate data-delay="0s">
+        <div class="step__num">1</div>
+        <h3 class="step__title">Create Your Account</h3>
+        <p class="step__desc">Sign up for free and tell us about your learning goals, subjects, and current level.</p>
+      </div>
+      <div class="step glass-card" data-animate data-delay="0.15s">
+        <div class="step__num">2</div>
+        <h3 class="step__title">Choose a Topic</h3>
+        <p class="step__desc">Enter any subject or topic and select your preferred difficulty level and format.</p>
+      </div>
+      <div class="step glass-card" data-animate data-delay="0.3s">
+        <div class="step__num">3</div>
+        <h3 class="step__title">AI Generates Content</h3>
+        <p class="step__desc">Get personalized study materials, quizzes, and flashcards generated instantly by AI.</p>
+      </div>
+      <div class="step glass-card" data-animate data-delay="0.45s">
+        <div class="step__num">4</div>
+        <h3 class="step__title">Track & Improve</h3>
+        <p class="step__desc">Monitor your progress, identify weak areas, and receive recommendations to continuously improve.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA ──────────────────────────────────────────────────── -->
+<section class="cta-section" id="cta">
+  <div class="container">
+    <div class="cta-card" data-animate>
+      <div class="section-tag">✦ Get Started</div>
+      <h2 class="cta-title">Ready to Transform<br/>Your Learning?</h2>
+      <p class="cta-subtitle">Join over 50,000 students who are already studying smarter with LearnAI. Start your free journey today.</p>
+      <div class="cta-actions">
+        <a href="register.html" class="btn btn-primary btn-lg">🚀 Start for Free</a>
+        <a href="login.html" class="btn btn-outline btn-lg">Sign In →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Footer ───────────────────────────────────────────────── -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer__inner">
+      <div class="footer__copy">© 2025 LearnAI. Built to empower students everywhere.</div>
+      <div class="footer__links">
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+        <a href="#">Contact</a>
+        <a href="#">Blog</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ── Toast ────────────────────────────────────────────────── -->
+<div id="toast-container"></div>
+
+<script type="module">
+  import { observeFadeIn } from './js/utils.js';
+  import { isLoggedIn } from './js/auth.js';
+
+  // Redirect if logged in
+  if (isLoggedIn()) {
+    const loginLink = document.querySelector('a[href="login.html"]');
+    const signupLink = document.querySelector('a[href="register.html"]');
+    if (loginLink) loginLink.href = 'dashboard.html';
+    if (signupLink) { signupLink.textContent = 'Dashboard →'; signupLink.href = 'dashboard.html'; }
+  }
+
+  // Navbar scroll effect
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 40);
+  });
+
+  // Smooth scroll for anchor links
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth' }); }
+    });
+  });
+
+  // Hamburger menu
+  const hamburger = document.getElementById('hamburger');
+  hamburger?.addEventListener('click', () => {
+    navbar.classList.toggle('nav-open');
+  });
+
+  // Fade-in animations
+  observeFadeIn('[data-animate]');
+
+  // Active nav link on scroll
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.navbar__links a');
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        navLinks.forEach(l => l.classList.remove('active'));
+        const link = document.querySelector(`.navbar__links a[href="#${e.target.id}"]`);
+        link?.classList.add('active');
+      }
+    });
+  }, { threshold: 0.5 });
+  sections.forEach(s => io.observe(s));
+</script>
+</body>
+</html>

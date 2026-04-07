@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/svg+xml" href="assests/logonobg.png">
+  <title>Dashboard — AdaptLearn AI</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/dashboard.css" />
+</head>
+<body>
+<div id="toast-container"></div>
+
+<!-- ── SVG Gradient defs (for progress ring) ─────────────────── -->
+<svg style="width:0;height:0;position:absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="prog-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#5b63f5"/>
+      <stop offset="100%" stop-color="#8b5cf6"/>
+    </linearGradient>
+  </defs>
+</svg>
+
+<!-- ── Modal ─────────────────────────────────────────────────── -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal">
+    <div class="modal__header">
+      <h2 class="modal__title" id="modal-title">Modal</h2>
+      <button class="modal__close" id="modal-close" aria-label="Close">✕</button>
+    </div>
+    <div class="modal__body" id="modal-body"></div>
+  </div>
+</div>
+
+<!-- ── Sidebar Toggle (mobile) ───────────────────────────────── -->
+<button class="sidebar-toggle" id="sidebar-toggle" aria-label="Toggle menu">☰</button>
+
+<!-- ════════════════════════════════════════════════════════════ -->
+<!--  DASHBOARD LAYOUT                                          -->
+<!-- ════════════════════════════════════════════════════════════ -->
+<div class="dashboard-layout">
+
+  <!-- ── SIDEBAR ─────────────────────────────────────────────── -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar__logo">
+      <div class="sidebar__logo-icon"><img src="assests/logonobg.png" alt="AdaptLearnAI Logo" /></div>
+      Adapt Learn AI
+    </div>
+
+    <!-- Profile -->
+    <div class="sidebar__profile">
+      <div class="sidebar__avatar" data-user-avatar>A</div>
+      <div class="sidebar__profile-info">
+        <div class="sidebar__profile-name" data-user-name>Student</div>
+        <div class="sidebar__profile-email" data-user-email>user@example.com</div>
+      </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="sidebar__nav">
+      <div class="sidebar__nav-label">Menu</div>
+
+      <div class="nav-item active" data-page="dashboard">
+        <span class="nav-item__icon">🏠</span>
+        Dashboard
+      </div>
+
+      <div class="nav-item" data-page="study" onclick="document.getElementById('btn-study').click()">
+        <span class="nav-item__icon">📚</span>
+        Study Material
+      </div>
+
+      <div class="nav-item" data-page="quiz" onclick="document.getElementById('btn-quiz').click()">
+        <span class="nav-item__icon">🎯</span>
+        Quizzes
+        <span class="nav-item__badge">3</span>
+      </div>
+
+      <div class="nav-item" data-page="flashcards">
+        <span class="nav-item__icon">🃏</span>
+        Flashcards
+      </div>
+
+      <div class="nav-item" data-page="progress">
+        <span class="nav-item__icon">📊</span>
+        Progress
+      </div>
+
+      <div class="nav-item" data-page="rec" onclick="document.getElementById('btn-rec').click()">
+        <span class="nav-item__icon">💡</span>
+        Recommendations
+      </div>
+
+      <div class="sidebar__divider"></div>
+
+      <div class="nav-item" data-page="settings">
+        <span class="nav-item__icon">⚙️</span>
+        Settings
+      </div>
+    </nav>
+
+    <div class="sidebar__divider"></div>
+
+    <button class="sidebar__logout" id="logout-btn">
+      <span>🚪</span>
+      Log Out
+    </button>
+  </aside>
+
+  <!-- ── MAIN CONTENT ──────────────────────────────────────────── -->
+  <main class="main-content" id="main-content">
+
+    <!-- Topbar -->
+    <div class="topbar">
+      <div class="topbar__greeting">
+        <div class="topbar__eyebrow">📅 Wednesday, April 2025</div>
+        <h1 class="topbar__title">Welcome back, <span data-user-name>Student</span>! 👋</h1>
+      </div>
+      <div class="topbar__actions">
+        <button class="topbar__btn" title="Search" onclick="showToast('Search coming soon!','info')">🔍</button>
+        <button class="topbar__btn" title="Notifications">
+          🔔
+          <span class="topbar__notif-dot"></span>
+        </button>
+        <div class="sidebar__avatar" data-user-avatar style="width:40px;height:40px;cursor:pointer;font-size:0.95rem">A</div>
+      </div>
+    </div>
+
+    <!-- Stats Strip -->
+    <div class="stats-strip">
+      <div class="stat-card">
+        <div class="stat-card__icon" style="background:rgba(91,99,245,0.15);color:var(--indigo-400)">📚</div>
+        <div class="stat-card__value" data-count="24" data-suffix="">0</div>
+        <div class="stat-card__label">Study Sessions</div>
+        <div class="stat-card__trend up">↑ +6 this week</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card__icon" style="background:rgba(52,213,200,0.15);color:var(--teal-400)">🎯</div>
+        <div class="stat-card__value" data-count="87" data-suffix="%">0%</div>
+        <div class="stat-card__label">Avg. Quiz Score</div>
+        <div class="stat-card__trend up">↑ +4% vs last week</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card__icon" style="background:rgba(245,166,35,0.15);color:var(--gold-400)">🔥</div>
+        <div class="stat-card__value" data-count="12" data-suffix="">0</div>
+        <div class="stat-card__label">Day Streak</div>
+        <div class="stat-card__trend up">↑ Personal best!</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card__icon" style="background:rgba(139,92,246,0.15);color:var(--violet-400)">🃏</div>
+        <div class="stat-card__value" data-count="156" data-suffix="">0</div>
+        <div class="stat-card__label">Flashcards Mastered</div>
+        <div class="stat-card__trend up">↑ +22 today</div>
+      </div>
+    </div>
+
+    <!-- Today's Study Plan -->
+    <div class="study-plan">
+      <div class="study-plan__header">
+        <div class="study-plan__title-wrap">
+          <h2 class="study-plan__title">📋 Today's Study Plan</h2>
+          <span class="study-plan__count">0/3 done</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:16px">
+          <div class="progress-ring">
+            <svg width="52" height="52" viewBox="0 0 52 52">
+              <circle class="progress-ring__track" cx="26" cy="26" r="22"/>
+              <circle class="progress-ring__fill" cx="26" cy="26" r="22"
+                stroke-dasharray="138.23" stroke-dashoffset="138.23"/>
+            </svg>
+            <div class="progress-ring__label">0%</div>
+          </div>
+          <button class="btn btn-outline btn-sm">View All</button>
+        </div>
+      </div>
+
+      <div class="task-list">
+        <div class="task-item completed">
+          <div class="task-check">✓</div>
+          <span class="task-label">Review Biology Notes — Chapter 5: Cell Division</span>
+          <span class="task-expand">⌄</span>
+        </div>
+        <div class="task-item completed">
+          <div class="task-check">✓</div>
+          <span class="task-label">Take History Quiz — World War II Era</span>
+          <span class="task-expand">⌄</span>
+        </div>
+        <div class="task-item">
+          <div class="task-check"></div>
+          <span class="task-label">Practice Math Exercises — Calculus Integration</span>
+          <span class="task-expand">⌄</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Feature Cards -->
+    <div class="feature-cards">
+      <!-- Study Material Card -->
+      <div class="dash-card card-study">
+        <div class="dash-card__thumb">
+          <div class="dash-card__thumb-bg">
+            <div class="flashcard-preview">
+              <div class="flashcard-mini">🧬<br/>What is<br/>mitosis?</div>
+              <div class="flashcard-mini">⚡<br/>Newton's<br/>Laws</div>
+              <div class="flashcard-mini">📐<br/>Pythagorean<br/>theorem</div>
+            </div>
+            <div class="dash-card__thumb-badge">AI Powered</div>
+          </div>
+        </div>
+        <div class="dash-card__body">
+          <h3 class="dash-card__title">Generate Study Material</h3>
+          <p class="dash-card__desc">AI-powered summaries, detailed notes, and interactive flashcards on any topic.</p>
+          <button class="btn btn-primary btn-sm dash-card__action" id="btn-study">
+            📚 Get Study Guides
+          </button>
+        </div>
+      </div>
+
+      <!-- Quiz Card -->
+      <div class="dash-card card-quiz">
+        <div class="dash-card__thumb">
+          <div class="dash-card__thumb-bg" style="flex-direction:column;gap:10px">
+            <div style="font-size:2rem">🎯</div>
+            <div class="dash-card__tags" style="justify-content:center">
+              <span class="badge badge-beginner quiz-diff-btn" data-diff="beginner">Beginner</span>
+              <span class="badge badge-medium quiz-diff-btn active" data-diff="medium">Medium</span>
+              <span class="badge badge-advanced quiz-diff-btn" data-diff="advanced">Advanced</span>
+            </div>
+            <div class="dash-card__thumb-badge">Custom Quizzes</div>
+          </div>
+        </div>
+        <div class="dash-card__body">
+          <h3 class="dash-card__title">Generate Quiz</h3>
+          <p class="dash-card__desc">Create custom quizzes with adaptive difficulty. Test your knowledge and track improvement.</p>
+          <button class="btn btn-primary btn-sm dash-card__action" id="btn-quiz"
+            style="background:var(--gradient-teal);box-shadow:0 4px 16px rgba(52,213,200,0.3)">
+            🚀 Generate Quiz
+          </button>
+        </div>
+      </div>
+
+      <!-- Recommendations Card -->
+      <div class="dash-card card-rec">
+        <div class="dash-card__thumb">
+          <div class="dash-card__thumb-bg" style="flex-direction:column;gap:8px">
+            <div style="font-size:2.5rem">🎯</div>
+            <div style="font-size:0.75rem;color:rgba(255,255,255,0.6);text-align:center;padding:0 12px">Personalized learning tips just for you</div>
+            <div class="dash-card__thumb-badge">Smart Tips</div>
+          </div>
+        </div>
+        <div class="dash-card__body">
+          <h3 class="dash-card__title">Recommendations</h3>
+          <p class="dash-card__desc">Personalized learning suggestions based on your performance, goals, and study patterns.</p>
+          <button class="btn btn-gold btn-sm dash-card__action" id="btn-rec">
+            💡 View Tips
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </main><!-- /main-content -->
+
+  <!-- ── AI CHAT PANEL ──────────────────────────────────────── -->
+  <aside class="chat-panel" id="chat-panel">
+    <div class="chat-header">
+      <div class="chat-header__info">
+        <div class="chat-header__avatar">🤖</div>
+        <div>
+          <div class="chat-header__name">AI Assistant</div>
+          <div class="chat-header__status">Online &amp; Ready</div>
+        </div>
+      </div>
+      <button class="chat-header__menu" title="Options">⋯</button>
+    </div>
+
+    <!-- Messages -->
+    <div class="chat-messages" id="chat-messages">
+      <!-- Initial AI message -->
+      <div class="chat-msg chat-msg--ai">
+        <div class="chat-msg__avatar">🤖</div>
+        <div>
+          <div class="chat-msg__bubble">
+            Hello! 👋 I'm your personal AI learning assistant. I can help you generate study guides, create quizzes, explain concepts, or answer any questions about your studies. What would you like to learn today?
+          </div>
+          <span class="chat-msg__time">Just now</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick suggestions -->
+    <div class="quick-suggestions">
+      <button class="suggestion-chip">📚 Study guide for Biology</button>
+      <button class="suggestion-chip">🎯 Quiz on World History</button>
+      <button class="suggestion-chip">🧮 Explain calculus</button>
+    </div>
+
+    <!-- Difficulty selector -->
+    <div class="chat-difficulty">
+      <div class="chat-difficulty__label">Response Level</div>
+      <div class="chat-difficulty__btns">
+        <button class="badge badge-beginner chat-difficulty-btn" data-level="beginner">Beginner</button>
+        <button class="badge badge-medium chat-difficulty-btn" data-level="medium">Medium</button>
+        <button class="badge badge-advanced chat-difficulty-btn" data-level="advanced">Advanced</button>
+      </div>
+    </div>
+
+    <!-- Input -->
+    <div class="chat-input-area">
+      <div class="chat-input-wrap">
+        <textarea
+          class="chat-input"
+          id="chat-input"
+          placeholder="Ask me anything…"
+          rows="1"
+          aria-label="Chat message"
+        ></textarea>
+        <button class="chat-attach" id="chat-attach" title="Attach file" aria-label="Attach file">📎</button>
+        <button class="chat-send" id="chat-send" title="Send" aria-label="Send message" disabled>➤</button>
+      </div>
+    </div>
+  </aside>
+
+</div><!-- /dashboard-layout -->
+
+<script type="module" src="js/dashboard.js"></script>
+</body>
+</html>
