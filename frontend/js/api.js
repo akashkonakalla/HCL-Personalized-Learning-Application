@@ -1,166 +1,166 @@
 /**
- * api.js — LearnAI API Client
- * All backend interactions go through this module.
+ * api.js — Centralized API layer
+ * All backend communication happens through this module.
  */
 
-const API_BASE = 'https://api.learnai.example.com/v1';
+const API = (() => {
 
-/**
- * Core fetch wrapper with auth + error handling
- */
-async function request(endpoint, options = {}) {
-  const token = localStorage.getItem('learnai_token');
-  const headers = {
-    'Content-Type': 'application/json',
-    ...(token ? { Authorization: `Bearer ${token}` } : {}),
-    ...options.headers,
-  };
+  const BASE_URL = window.API_BASE_URL || 'http://localhost:8000';
 
-  const response = await fetch(`${API_BASE}${endpoint}`, {
-    ...options,
-    headers,
-  });
+  /**
+   * Core fetch wrapper with auth header injection and error handling
+   * @param {string} endpoint
+   * @param {object} options
+   * @returns {Promise<any>}
+   */
+  async function request(endpoint, options = {}) {
+    const url = `${BASE_URL}${endpoint}`;
 
-  if (response.status === 401) {
-    localStorage.removeItem('learnai_token');
-    localStorage.removeItem('learnai_user');
-    window.location.href = 'login.html';
-    return;
+    const headers = {
+      'Content-Type': 'application/json',
+      ...(options.headers || {})
+    };
+
+    // Inject JWT token if available
+    const token = Auth?.getToken?.();
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`;
+    }
+
+    const config = {
+      ...options,
+      headers
+    };
+
+    try {
+      const response = await fetch(url, config);
+
+      // Handle 401 Unauthorized — redirect to login
+      if (response.status === 401) {
+        Auth?.logout?.();
+        window.location.href = 'login.html';
+        return;
+      }
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new APIError(data.detail || data.message || 'Something went wrong', response.status);
+      }
+
+      return data;
+    } catch (err) {
+      if (err instanceof APIError) throw err;
+      // Network error
+      throw new APIError('Unable to connect to server. Please check your connection.', 0);
+    }
   }
 
-  const data = await response.json();
-  if (!response.ok) {
-    throw new Error(data.message || 'Request failed');
+  /**
+   * Custom error class for API errors
+   */
+  class APIError extends Error {
+    constructor(message, status) {
+      super(message);
+      this.name = 'APIError';
+      this.status = status;
+    }
   }
-  return data;
-}
 
-/* ── Auth Endpoints ──────────────────────────────────────────── */
-export const authAPI = {
-  login: (email, password) =>
-    request('/auth/login', {
+  // ─────────────────────────────────────────────
+  // Auth Endpoints
+  // ─────────────────────────────────────────────
+
+  /**
+   * Register a new user
+   * @param {object} payload - { name, email, password }
+   */
+  async function register(payload) {
+    return request('/auth/register', {
       method: 'POST',
-      body: JSON.stringify({ email, password }),
-    }),
-
-  register: (name, email, password) =>
-    request('/auth/register', {
-      method: 'POST',
-      body: JSON.stringify({ name, email, password }),
-    }),
-
-  logout: () => request('/auth/logout', { method: 'POST' }),
-
-  me: () => request('/auth/me'),
-};
-
-/* ── Study Material Endpoints ────────────────────────────────── */
-export const studyAPI = {
-  generateGuide: (topic, difficulty = 'medium') =>
-    request('/study/generate', {
-      method: 'POST',
-      body: JSON.stringify({ topic, difficulty }),
-    }),
-
-  getFlashcards: (topic, count = 10) =>
-    request('/study/flashcards', {
-      method: 'POST',
-      body: JSON.stringify({ topic, count }),
-    }),
-
-  getHistory: () => request('/study/history'),
-};
-
-/* ── Quiz Endpoints ──────────────────────────────────────────── */
-export const quizAPI = {
-  generate: (topic, difficulty = 'medium', questionCount = 10) =>
-    request('/quiz/generate', {
-      method: 'POST',
-      body: JSON.stringify({ topic, difficulty, questionCount }),
-    }),
-
-  submit: (quizId, answers) =>
-    request(`/quiz/${quizId}/submit`, {
-      method: 'POST',
-      body: JSON.stringify({ answers }),
-    }),
-
-  getHistory: () => request('/quiz/history'),
-};
-
-/* ── Recommendations Endpoint ────────────────────────────────── */
-export const recommendAPI = {
-  get: () => request('/recommendations'),
-  dismiss: (id) => request(`/recommendations/${id}`, { method: 'DELETE' }),
-};
-
-/* ── Progress Endpoint ───────────────────────────────────────── */
-export const progressAPI = {
-  get: () => request('/progress'),
-  getStats: () => request('/progress/stats'),
-};
-
-/* ── Chat / AI Endpoint ──────────────────────────────────────── */
-export const chatAPI = {
-  send: (message, difficulty = 'medium', history = []) =>
-    request('/chat/message', {
-      method: 'POST',
-      body: JSON.stringify({ message, difficulty, history }),
-    }),
-};
-
-/* ── Upload ──────────────────────────────────────────────────── */
-export const uploadAPI = {
-  file: async (file) => {
-    const token = localStorage.getItem('learnai_token');
-    const form = new FormData();
-    form.append('file', file);
-    const res = await fetch(`${API_BASE}/upload`, {
-      method: 'POST',
-      headers: { Authorization: `Bearer ${token}` },
-      body: form,
+      body: JSON.stringify(payload)
     });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.message || 'Upload failed');
-    return data;
-  },
-};
+  }
 
-/* ── Mock helper (dev only) ──────────────────────────────────── */
-export function mockDelay(ms = 1200) {
-  return new Promise((r) => setTimeout(r, ms));
-}
+  /**
+   * Login user
+   * @param {object} payload - { email, password }
+   */
+  async function login(payload) {
+    return request('/auth/login', {
+      method: 'POST',
+      body: JSON.stringify(payload)
+    });
+  }
 
-export async function mockChat(message) {
-  await mockDelay(1000 + Math.random() * 800);
-  const responses = [
-    `Great question about "${message}"! Here's a summary to help you understand this topic better. Start with the core concepts, then build up complexity gradually.`,
-    `I can help you study "${message}". Let me break this down into digestible pieces so you can master it step by step.`,
-    `For "${message}", I recommend starting with the fundamentals. Would you like me to generate a study guide, a quiz, or some flashcards?`,
-    `Excellent! "${message}" is a fascinating topic. Here are the key points you should focus on for your studies...`,
-  ];
-  return responses[Math.floor(Math.random() * responses.length)];
-}
+  // ─────────────────────────────────────────────
+  // Learning Endpoints
+  // ─────────────────────────────────────────────
 
-export async function mockGenerateQuiz(topic, difficulty) {
-  await mockDelay(1500);
+  /**
+   * Generate a quiz for a given topic
+   * @param {string} topic
+   */
+  async function generateQuiz(topic) {
+    return request('/learning/generate-quiz', {
+      method: 'POST',
+      body: JSON.stringify({ topic })
+    });
+  }
+
+  /**
+   * Submit quiz answers for evaluation
+   * @param {object} payload - { topic, answers, questions }
+   */
+  async function submitQuiz(payload) {
+    return request('/learning/submit-quiz', {
+      method: 'POST',
+      body: JSON.stringify(payload)
+    });
+  }
+
+  /**
+   * Generate personalized learning content
+   * @param {object} payload - { topic, level, score }
+   */
+  async function generateContent(payload) {
+    return request('/learning/generate-content', {
+      method: 'POST',
+      body: JSON.stringify(payload)
+    });
+  }
+
+  /**
+   * Get user's learning history
+   */
+  async function getHistory() {
+    return request('/learning/history', {
+      method: 'GET'
+    });
+  }
+
+  /**
+   * Send a message to the AI agent
+   * @param {object} payload - { topic, level, message, history }
+   */
+  async function chatWithAgent(payload) {
+    return request('/learning/agent-chat', {
+      method: 'POST',
+      body: JSON.stringify(payload)
+    });
+  }
+
   return {
-    id: 'quiz_' + Date.now(),
-    topic,
-    difficulty,
-    questions: [
-      {
-        id: 1,
-        text: `What is the main concept behind ${topic}?`,
-        options: ['Option A', 'Option B', 'Option C', 'Option D'],
-        correct: 0,
-      },
-      {
-        id: 2,
-        text: `Which principle is most important in ${topic}?`,
-        options: ['Principle X', 'Principle Y', 'Principle Z', 'None of the above'],
-        correct: 2,
-      },
-    ],
+    APIError,
+    register,
+    login,
+    generateQuiz,
+    submitQuiz,
+    generateContent,
+    getHistory,
+    chatWithAgent
   };
-}
+
+})();
+
+window.API = API;

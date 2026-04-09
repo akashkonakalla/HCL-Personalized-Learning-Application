@@ -3,325 +3,334 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="icon" type="image/svg+xml" href="assests/logonobg.png">
-  <title>Dashboard — AdaptLearn AI</title>
-  <link rel="stylesheet" href="css/style.css" />
+  <link rel="icon" type="image/x-icon" href="assests/nobgrobo.png" />
+  <title>Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/components.css" />
   <link rel="stylesheet" href="css/dashboard.css" />
 </head>
 <body>
-<div id="toast-container"></div>
+  <div class="noise-overlay"></div>
 
-<!-- ── SVG Gradient defs (for progress ring) ─────────────────── -->
-<svg style="width:0;height:0;position:absolute" aria-hidden="true">
-  <defs>
-    <linearGradient id="prog-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" stop-color="#5b63f5"/>
-      <stop offset="100%" stop-color="#8b5cf6"/>
-    </linearGradient>
-  </defs>
-</svg>
-
-<!-- ── Modal ─────────────────────────────────────────────────── -->
-<div class="modal-overlay" id="modal-overlay">
-  <div class="modal">
-    <div class="modal__header">
-      <h2 class="modal__title" id="modal-title">Modal</h2>
-      <button class="modal__close" id="modal-close" aria-label="Close">✕</button>
-    </div>
-    <div class="modal__body" id="modal-body"></div>
-  </div>
-</div>
-
-<!-- ── Sidebar Toggle (mobile) ───────────────────────────────── -->
-<button class="sidebar-toggle" id="sidebar-toggle" aria-label="Toggle menu">☰</button>
-
-<!-- ════════════════════════════════════════════════════════════ -->
-<!--  DASHBOARD LAYOUT                                          -->
-<!-- ════════════════════════════════════════════════════════════ -->
-<div class="dashboard-layout">
-
-  <!-- ── SIDEBAR ─────────────────────────────────────────────── -->
+  <!-- Sidebar -->
   <aside class="sidebar" id="sidebar">
-    <div class="sidebar__logo">
-      <div class="sidebar__logo-icon"><img src="assests/logonobg.png" alt="AdaptLearnAI Logo" /></div>
-      Adapt Learn AI
+    <div class="sidebar-logo">
+      <img src="assests/nobgrobo.png" alt="LearnSphere AI Logo" class="logo-img" />
+      <span class="logo-text">HCL Personalized Learn AI</span>
     </div>
 
-    <!-- Profile -->
-    <div class="sidebar__profile">
-      <div class="sidebar__avatar" data-user-avatar>A</div>
-      <div class="sidebar__profile-info">
-        <div class="sidebar__profile-name" data-user-name>Student</div>
-        <div class="sidebar__profile-email" data-user-email>user@example.com</div>
+    <div class="sidebar-user" id="sidebar-user">
+      <div class="user-avatar" id="user-avatar">?</div>
+      <div class="user-info">
+        <div class="user-name" id="user-name">Loading...</div>
+        <div class="user-email" id="user-email">...</div>
       </div>
     </div>
 
-    <!-- Navigation -->
-    <nav class="sidebar__nav">
-      <div class="sidebar__nav-label">Menu</div>
-
-      <div class="nav-item active" data-page="dashboard">
-        <span class="nav-item__icon">🏠</span>
-        Dashboard
-      </div>
-
-      <div class="nav-item" data-page="study" onclick="document.getElementById('btn-study').click()">
-        <span class="nav-item__icon">📚</span>
-        Study Material
-      </div>
-
-      <div class="nav-item" data-page="quiz" onclick="document.getElementById('btn-quiz').click()">
-        <span class="nav-item__icon">🎯</span>
-        Quizzes
-        <span class="nav-item__badge">3</span>
-      </div>
-
-      <div class="nav-item" data-page="flashcards">
-        <span class="nav-item__icon">🃏</span>
-        Flashcards
-      </div>
-
-      <div class="nav-item" data-page="progress">
-        <span class="nav-item__icon">📊</span>
-        Progress
-      </div>
-
-      <div class="nav-item" data-page="rec" onclick="document.getElementById('btn-rec').click()">
-        <span class="nav-item__icon">💡</span>
-        Recommendations
-      </div>
-
-      <div class="sidebar__divider"></div>
-
-      <div class="nav-item" data-page="settings">
-        <span class="nav-item__icon">⚙️</span>
-        Settings
-      </div>
+    <nav class="sidebar-nav">
+      <a href="#" class="sidebar-link active" data-section="learn">
+        <span class="link-icon">📚</span>
+        <span>Learn</span>
+      </a>
+      <a href="#" class="sidebar-link" data-section="history">
+        <span class="link-icon">📊</span>
+        <span>History</span>
+      </a>
     </nav>
 
-    <div class="sidebar__divider"></div>
-
-    <button class="sidebar__logout" id="logout-btn">
-      <span>🚪</span>
-      Log Out
-    </button>
+    <div class="sidebar-bottom">
+      <button class="sidebar-link" id="logout-btn">
+        <span class="link-icon">🚪</span>
+        <span>Sign Out</span>
+      </button>
+    </div>
   </aside>
 
-  <!-- ── MAIN CONTENT ──────────────────────────────────────────── -->
-  <main class="main-content" id="main-content">
+  <!-- Main Content -->
+  <main class="main-content">
 
-    <!-- Topbar -->
-    <div class="topbar">
-      <div class="topbar__greeting">
-        <div class="topbar__eyebrow">📅 Wednesday, April 2025</div>
-        <h1 class="topbar__title">Welcome back, <span data-user-name>Student</span>! 👋</h1>
+    <!-- Top Bar -->
+    <header class="topbar">
+      <button class="sidebar-toggle" id="sidebar-toggle">☰</button>
+      <div class="topbar-title" id="topbar-title">Start Learning</div>
+      <div class="topbar-right">
+        <div class="user-chip" id="topbar-user">
+          <div class="chip-avatar" id="chip-avatar">?</div>
+          <span id="chip-name">...</span>
+        </div>
       </div>
-      <div class="topbar__actions">
-        <button class="topbar__btn" title="Search" onclick="showToast('Search coming soon!','info')">🔍</button>
-        <button class="topbar__btn" title="Notifications">
-          🔔
-          <span class="topbar__notif-dot"></span>
+    </header>
+
+    <!-- Global Loader -->
+    <div class="global-loader hidden" id="global-loader">
+      <div class="loader-inner">
+        <div class="loader-spinner"></div>
+        <div class="loader-text" id="loader-text">Generating with AI...</div>
+      </div>
+    </div>
+
+    <!-- ─────────────────────── STEP 1: Topic Input ─────────────────────── -->
+    <section class="step-section" id="step-topic" data-step="1">
+      <div class="step-hero">
+        <div class="step-hero-bg">
+          <div class="orb orb-1"></div>
+          <div class="orb orb-2"></div>
+        </div>
+        <div class="step-hero-content">
+          <div class="step-badge">AI-Powered Learning</div>
+          <h1>What would you like to learn today?</h1>
+          <p>Enter any topic and our AI will diagnose your knowledge and create personalized materials just for you.</p>
+
+          <div class="topic-input-card">
+            <div class="topic-input-wrapper">
+              <span class="topic-icon">🔍</span>
+              <input
+                type="text"
+                id="topic-input"
+                placeholder="e.g. Machine Learning, DNA Replication, Byzantine History..."
+                maxlength="100"
+              />
+            </div>
+            <button class="btn-primary btn-lg" id="start-learning-btn">
+              Start Learning →
+            </button>
+          </div>
+
+          <div class="topic-suggestions">
+            <span class="suggestions-label">Try:</span>
+            <button class="suggestion-chip" data-topic="Machine Learning">Machine Learning</button>
+            <button class="suggestion-chip" data-topic="Quantum Physics">Quantum Physics</button>
+            <button class="suggestion-chip" data-topic="JavaScript Promises">JavaScript Promises</button>
+            <button class="suggestion-chip" data-topic="World War II">World War II</button>
+            <button class="suggestion-chip" data-topic="Photosynthesis">Photosynthesis</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent history preview -->
+      <div class="recent-section" id="recent-section">
+        <h2 class="section-title">Recent Sessions</h2>
+        <div class="history-grid" id="recent-history-grid">
+          <div class="history-skeleton"></div>
+          <div class="history-skeleton"></div>
+          <div class="history-skeleton"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─────────────────────── STEP 2: Quiz ─────────────────────── -->
+    <section class="step-section hidden" id="step-quiz" data-step="2">
+      <div class="section-header-row">
+        <div>
+          <div class="section-label" id="quiz-topic-label">Topic</div>
+          <h2 class="section-title">Knowledge Diagnostic Quiz</h2>
+          <p class="section-desc">Answer all questions. Your level will be determined from your score.</p>
+        </div>
+        <div class="quiz-progress-info">
+          <div class="progress-circle" id="quiz-progress-circle">
+            <span id="quiz-q-current">0</span>/<span id="quiz-q-total">10</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="quiz-container" id="quiz-container">
+        <!-- Questions rendered by quiz.js -->
+      </div>
+
+      <div class="quiz-footer">
+        <button class="btn-ghost" id="quiz-back-btn">← Back</button>
+        <button class="btn-primary btn-lg" id="submit-quiz-btn">
+          Submit Quiz →
         </button>
-        <div class="sidebar__avatar" data-user-avatar style="width:40px;height:40px;cursor:pointer;font-size:0.95rem">A</div>
       </div>
-    </div>
+    </section>
 
-    <!-- Stats Strip -->
-    <div class="stats-strip">
-      <div class="stat-card">
-        <div class="stat-card__icon" style="background:rgba(91,99,245,0.15);color:var(--indigo-400)">📚</div>
-        <div class="stat-card__value" data-count="24" data-suffix="">0</div>
-        <div class="stat-card__label">Study Sessions</div>
-        <div class="stat-card__trend up">↑ +6 this week</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-card__icon" style="background:rgba(52,213,200,0.15);color:var(--teal-400)">🎯</div>
-        <div class="stat-card__value" data-count="87" data-suffix="%">0%</div>
-        <div class="stat-card__label">Avg. Quiz Score</div>
-        <div class="stat-card__trend up">↑ +4% vs last week</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-card__icon" style="background:rgba(245,166,35,0.15);color:var(--gold-400)">🔥</div>
-        <div class="stat-card__value" data-count="12" data-suffix="">0</div>
-        <div class="stat-card__label">Day Streak</div>
-        <div class="stat-card__trend up">↑ Personal best!</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-card__icon" style="background:rgba(139,92,246,0.15);color:var(--violet-400)">🃏</div>
-        <div class="stat-card__value" data-count="156" data-suffix="">0</div>
-        <div class="stat-card__label">Flashcards Mastered</div>
-        <div class="stat-card__trend up">↑ +22 today</div>
-      </div>
-    </div>
-
-    <!-- Today's Study Plan -->
-    <div class="study-plan">
-      <div class="study-plan__header">
-        <div class="study-plan__title-wrap">
-          <h2 class="study-plan__title">📋 Today's Study Plan</h2>
-          <span class="study-plan__count">0/3 done</span>
-        </div>
-        <div style="display:flex;align-items:center;gap:16px">
-          <div class="progress-ring">
-            <svg width="52" height="52" viewBox="0 0 52 52">
-              <circle class="progress-ring__track" cx="26" cy="26" r="22"/>
-              <circle class="progress-ring__fill" cx="26" cy="26" r="22"
-                stroke-dasharray="138.23" stroke-dashoffset="138.23"/>
-            </svg>
-            <div class="progress-ring__label">0%</div>
-          </div>
-          <button class="btn btn-outline btn-sm">View All</button>
-        </div>
-      </div>
-
-      <div class="task-list">
-        <div class="task-item completed">
-          <div class="task-check">✓</div>
-          <span class="task-label">Review Biology Notes — Chapter 5: Cell Division</span>
-          <span class="task-expand">⌄</span>
-        </div>
-        <div class="task-item completed">
-          <div class="task-check">✓</div>
-          <span class="task-label">Take History Quiz — World War II Era</span>
-          <span class="task-expand">⌄</span>
-        </div>
-        <div class="task-item">
-          <div class="task-check"></div>
-          <span class="task-label">Practice Math Exercises — Calculus Integration</span>
-          <span class="task-expand">⌄</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- Feature Cards -->
-    <div class="feature-cards">
-      <!-- Study Material Card -->
-      <div class="dash-card card-study">
-        <div class="dash-card__thumb">
-          <div class="dash-card__thumb-bg">
-            <div class="flashcard-preview">
-              <div class="flashcard-mini">🧬<br/>What is<br/>mitosis?</div>
-              <div class="flashcard-mini">⚡<br/>Newton's<br/>Laws</div>
-              <div class="flashcard-mini">📐<br/>Pythagorean<br/>theorem</div>
-            </div>
-            <div class="dash-card__thumb-badge">AI Powered</div>
+    <!-- ─────────────────────── STEP 3: Results ─────────────────────── -->
+    <section class="step-section hidden" id="step-results" data-step="3">
+      <div class="results-hero">
+        <div class="results-score-ring" id="results-score-ring">
+          <svg viewBox="0 0 120 120">
+            <circle class="ring-bg" cx="60" cy="60" r="52" />
+            <circle class="ring-fill" id="ring-fill" cx="60" cy="60" r="52"
+              stroke-dasharray="326.7" stroke-dashoffset="326.7" />
+          </svg>
+          <div class="ring-text">
+            <div class="ring-score" id="ring-score">0</div>
+            <div class="ring-label">/ 10</div>
           </div>
         </div>
-        <div class="dash-card__body">
-          <h3 class="dash-card__title">Generate Study Material</h3>
-          <p class="dash-card__desc">AI-powered summaries, detailed notes, and interactive flashcards on any topic.</p>
-          <button class="btn btn-primary btn-sm dash-card__action" id="btn-study">
-            📚 Get Study Guides
+
+        <div class="results-info">
+          <div class="results-level-badge" id="results-level-badge">
+            <span class="level-emoji" id="results-level-emoji">🎯</span>
+            <span class="level-name" id="results-level-name">Loading...</span>
+          </div>
+          <h2 id="results-heading">Diagnostic Complete</h2>
+          <p id="results-desc">Your personalized learning materials are being prepared.</p>
+          <button class="btn-primary btn-lg" id="generate-content-btn">
+            Generate My Study Materials →
           </button>
         </div>
       </div>
 
-      <!-- Quiz Card -->
-      <div class="dash-card card-quiz">
-        <div class="dash-card__thumb">
-          <div class="dash-card__thumb-bg" style="flex-direction:column;gap:10px">
-            <div style="font-size:2rem">🎯</div>
-            <div class="dash-card__tags" style="justify-content:center">
-              <span class="badge badge-beginner quiz-diff-btn" data-diff="beginner">Beginner</span>
-              <span class="badge badge-medium quiz-diff-btn active" data-diff="medium">Medium</span>
-              <span class="badge badge-advanced quiz-diff-btn" data-diff="advanced">Advanced</span>
-            </div>
-            <div class="dash-card__thumb-badge">Custom Quizzes</div>
-          </div>
-        </div>
-        <div class="dash-card__body">
-          <h3 class="dash-card__title">Generate Quiz</h3>
-          <p class="dash-card__desc">Create custom quizzes with adaptive difficulty. Test your knowledge and track improvement.</p>
-          <button class="btn btn-primary btn-sm dash-card__action" id="btn-quiz"
-            style="background:var(--gradient-teal);box-shadow:0 4px 16px rgba(52,213,200,0.3)">
-            🚀 Generate Quiz
-          </button>
-        </div>
+      <div class="results-breakdown" id="results-breakdown">
+        <!-- Answer breakdown rendered by quiz.js -->
       </div>
+    </section>
 
-      <!-- Recommendations Card -->
-      <div class="dash-card card-rec">
-        <div class="dash-card__thumb">
-          <div class="dash-card__thumb-bg" style="flex-direction:column;gap:8px">
-            <div style="font-size:2.5rem">🎯</div>
-            <div style="font-size:0.75rem;color:rgba(255,255,255,0.6);text-align:center;padding:0 12px">Personalized learning tips just for you</div>
-            <div class="dash-card__thumb-badge">Smart Tips</div>
-          </div>
-        </div>
-        <div class="dash-card__body">
-          <h3 class="dash-card__title">Recommendations</h3>
-          <p class="dash-card__desc">Personalized learning suggestions based on your performance, goals, and study patterns.</p>
-          <button class="btn btn-gold btn-sm dash-card__action" id="btn-rec">
-            💡 View Tips
-          </button>
-        </div>
-      </div>
-    </div>
-
-  </main><!-- /main-content -->
-
-  <!-- ── AI CHAT PANEL ──────────────────────────────────────── -->
-  <aside class="chat-panel" id="chat-panel">
-    <div class="chat-header">
-      <div class="chat-header__info">
-        <div class="chat-header__avatar">🤖</div>
+    <!-- ─────────────────────── STEP 4: Content ─────────────────────── -->
+    <section class="step-section hidden" id="step-content" data-step="4">
+      <div class="section-header-row">
         <div>
-          <div class="chat-header__name">AI Assistant</div>
-          <div class="chat-header__status">Online &amp; Ready</div>
+          <div class="section-label" id="content-level-label">Your Level</div>
+          <h2 class="section-title" id="content-topic-title">Study Materials</h2>
+        </div>
+        <div class="content-actions">
+          <button class="btn-ghost" id="download-pdf-btn">⬇ PDF</button>
+          <button class="btn-ghost" id="download-docx-btn">⬇ DOCX</button>
+          <button class="btn-ghost" id="download-md-btn">⬇ Markdown</button>
         </div>
       </div>
-      <button class="chat-header__menu" title="Options">⋯</button>
-    </div>
 
-    <!-- Messages -->
-    <div class="chat-messages" id="chat-messages">
-      <!-- Initial AI message -->
-      <div class="chat-msg chat-msg--ai">
-        <div class="chat-msg__avatar">🤖</div>
+      <div class="content-tabs">
+        <button class="content-tab active" data-tab="summary">Summary</button>
+        <button class="content-tab" data-tab="concepts">Key Concepts</button>
+        <button class="content-tab" data-tab="details">Deep Dive</button>
+      </div>
+
+      <div class="content-body" id="content-body">
+        <!-- Content rendered by content.js -->
+      </div>
+
+      <div class="content-nav">
+        <button class="btn-ghost" id="content-back-btn">← Back to Results</button>
+        <button class="btn-primary btn-lg" id="show-flashcards-btn">Flashcards →</button>
+      </div>
+    </section>
+
+    <!-- ─────────────────────── STEP 5: Flashcards ─────────────────────── -->
+    <section class="step-section hidden" id="step-flashcards" data-step="5">
+      <div class="section-header-row">
         <div>
-          <div class="chat-msg__bubble">
-            Hello! 👋 I'm your personal AI learning assistant. I can help you generate study guides, create quizzes, explain concepts, or answer any questions about your studies. What would you like to learn today?
-          </div>
-          <span class="chat-msg__time">Just now</span>
+          <div class="section-label">Active Recall</div>
+          <h2 class="section-title">Flashcards</h2>
+          <p class="section-desc">Click a card to reveal the answer. Navigate with the arrows.</p>
+        </div>
+        <div class="flashcard-counter">
+          <span id="fc-current">1</span> / <span id="fc-total">?</span>
         </div>
       </div>
-    </div>
 
-    <!-- Quick suggestions -->
-    <div class="quick-suggestions">
-      <button class="suggestion-chip">📚 Study guide for Biology</button>
-      <button class="suggestion-chip">🎯 Quiz on World History</button>
-      <button class="suggestion-chip">🧮 Explain calculus</button>
-    </div>
-
-    <!-- Difficulty selector -->
-    <div class="chat-difficulty">
-      <div class="chat-difficulty__label">Response Level</div>
-      <div class="chat-difficulty__btns">
-        <button class="badge badge-beginner chat-difficulty-btn" data-level="beginner">Beginner</button>
-        <button class="badge badge-medium chat-difficulty-btn" data-level="medium">Medium</button>
-        <button class="badge badge-advanced chat-difficulty-btn" data-level="advanced">Advanced</button>
+      <div class="flashcard-stage" id="flashcard-stage">
+        <div class="flashcard" id="flashcard">
+          <div class="flashcard-inner" id="flashcard-inner">
+            <div class="flashcard-front" id="fc-front">
+              <div class="fc-label">Question</div>
+              <div class="fc-text" id="fc-question-text">Loading...</div>
+            </div>
+            <div class="flashcard-back" id="fc-back">
+              <div class="fc-label">Answer</div>
+              <div class="fc-text" id="fc-answer-text">Loading...</div>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
 
-    <!-- Input -->
-    <div class="chat-input-area">
-      <div class="chat-input-wrap">
-        <textarea
-          class="chat-input"
-          id="chat-input"
-          placeholder="Ask me anything…"
-          rows="1"
-          aria-label="Chat message"
-        ></textarea>
-        <button class="chat-attach" id="chat-attach" title="Attach file" aria-label="Attach file">📎</button>
-        <button class="chat-send" id="chat-send" title="Send" aria-label="Send message" disabled>➤</button>
+      <div class="flashcard-controls">
+        <button class="btn-ghost" id="fc-prev-btn">← Prev</button>
+        <button class="btn-outline" id="fc-flip-btn">Flip Card</button>
+        <button class="btn-ghost" id="fc-next-btn">Next →</button>
       </div>
-    </div>
-  </aside>
 
-</div><!-- /dashboard-layout -->
+      <div class="content-nav">
+        <button class="btn-ghost" id="flashcards-back-btn">← Back to Content</button>
+        <button class="btn-primary btn-lg" id="show-recommendations-btn">Recommendations →</button>
+      </div>
+    </section>
 
-<script type="module" src="js/dashboard.js"></script>
+    <!-- ─────────────────────── STEP 6: Recommendations ─────────────────────── -->
+    <section class="step-section hidden" id="step-recommendations" data-step="6">
+      <div class="section-header-row">
+        <div>
+          <div class="section-label">What's Next</div>
+          <h2 class="section-title">Personalized Recommendations</h2>
+          <p class="section-desc">Based on your quiz performance and current level.</p>
+        </div>
+      </div>
+
+      <div class="recommendations-grid" id="recommendations-grid">
+        <!-- Rendered by recommendations.js -->
+      </div>
+
+      <div class="content-nav">
+        <button class="btn-ghost" id="recs-back-btn">← Back to Flashcards</button>
+        <button class="btn-primary btn-lg" id="show-agent-btn">AI Suggestions →</button>
+      </div>
+    </section>
+
+    <!-- ─────────────────────── STEP 7: AI Agent ─────────────────────── -->
+    <section class="step-section hidden" id="step-agent" data-step="7">
+      <div class="section-header-row">
+        <div>
+          <div class="section-label">Agentic AI</div>
+          <h2 class="section-title">Your Personal AI Tutor</h2>
+          <p class="section-desc">Your AI has analyzed your performance and has personalized guidance for you.</p>
+        </div>
+      </div>
+
+      <div class="agent-chat" id="agent-chat">
+        <!-- Rendered by dashboard.js -->
+      </div>
+
+      <div class="agent-input-area">
+        <div class="agent-input-wrapper">
+          <input type="text" id="agent-input" placeholder="Ask your AI tutor anything about this topic..." />
+          <button class="btn-primary" id="agent-send-btn">Send</button>
+        </div>
+      </div>
+
+      <div class="content-nav">
+        <button class="btn-ghost" id="agent-back-btn">← Back</button>
+        <button class="btn-primary btn-lg" id="start-over-btn">Learn New Topic →</button>
+      </div>
+    </section>
+
+    <!-- ─────────────────────── History Section ─────────────────────── -->
+    <section class="step-section hidden" id="section-history" data-step="history">
+      <div class="section-header-row">
+        <div>
+          <div class="section-label">Your Progress</div>
+          <h2 class="section-title">Learning History</h2>
+        </div>
+      </div>
+      <div class="history-table-wrapper">
+        <table class="history-table" id="history-table">
+          <thead>
+            <tr>
+              <th>Topic</th>
+              <th>Score</th>
+              <th>Level</th>
+              <th>Date</th>
+            </tr>
+          </thead>
+          <tbody id="history-tbody">
+            <!-- Rendered by dashboard.js -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="js/utils.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/quiz.js"></script>
+  <script src="js/content.js"></script>
+  <script src="js/flashcards.js"></script>
+  <script src="js/recommendations.js"></script>
+  <script src="js/dashboard.js"></script>
 </body>
 </html>

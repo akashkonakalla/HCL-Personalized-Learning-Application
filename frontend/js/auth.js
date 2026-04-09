@@ -1,111 +1,239 @@
 /**
- * auth.js — Authentication logic for LearnAI
+ * auth.js — Authentication logic + JWT handling
+ * Handles both dashboard auth guard and login/register form logic
  */
 
-/* ── Token / User helpers ───────────────────────────────────── */
-export function getToken() {
-  return localStorage.getItem('learnai_token');
-}
-export function getUser() {
-  try {
-    return JSON.parse(localStorage.getItem('learnai_user') || 'null');
-  } catch {
-    return null;
-  }
-}
-export function setSession(token, user) {
-  localStorage.setItem('learnai_token', token);
-  localStorage.setItem('learnai_user', JSON.stringify(user));
-}
-export function clearSession() {
-  localStorage.removeItem('learnai_token');
-  localStorage.removeItem('learnai_user');
-}
-export function isLoggedIn() {
-  return !!getToken();
-}
+const Auth = (() => {
 
-/* ── Guard helpers ──────────────────────────────────────────── */
-export function requireAuth() {
-  if (!isLoggedIn()) {
+  const TOKEN_KEY = 'learnai_token';
+  const USER_KEY  = 'learnai_user';
+
+  // ─── Token Management ───
+
+  function getToken() {
+    return localStorage.getItem(TOKEN_KEY);
+  }
+
+  function setToken(token) {
+    localStorage.setItem(TOKEN_KEY, token);
+  }
+
+  function getUser() {
+    try {
+      const raw = localStorage.getItem(USER_KEY);
+      return raw ? JSON.parse(raw) : null;
+    } catch {
+      return null;
+    }
+  }
+
+  function setUser(user) {
+    localStorage.setItem(USER_KEY, JSON.stringify(user));
+  }
+
+  function isLoggedIn() {
+    return !!getToken();
+  }
+
+  function logout() {
+    localStorage.removeItem(TOKEN_KEY);
+    localStorage.removeItem(USER_KEY);
     window.location.href = 'login.html';
-    return false;
   }
-  return true;
+
+  // ─── Auth Guard ───
+  // Call this on protected pages to redirect if not logged in
+  // TEMPORARY: For development, we can bypass auth and go straight to quiz step with a preset topic
+  // function requireAuth() {
+  //   if (!isLoggedIn()) {
+  //     window.location.href = 'login.html';
+  //     return false;
+  //   }
+  //   return true;
+  // }
+   
+  function requireAuth() {
+  return true; // TEMP BYPASS
 }
-export function redirectIfLoggedIn() {
-  if (isLoggedIn()) {
-    window.location.href = 'dashboard.html';
+  // ─── Redirect Logged-in Users ───
+  // Call on login/register pages
+
+  function redirectIfLoggedIn() {
+    if (isLoggedIn()) {
+      window.location.href = 'dashboard.html';
+    }
   }
-}
 
-/* ── Validation ──────────────────────────────────────────────── */
-export function validateEmail(email) {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-}
-export function validatePassword(pw) {
-  return pw.length >= 6;
-}
-export function getPasswordStrength(pw) {
-  if (!pw) return 0;
-  let score = 0;
-  if (pw.length >= 8) score++;
-  if (/[A-Z]/.test(pw)) score++;
-  if (/[0-9]/.test(pw)) score++;
-  if (/[^A-Za-z0-9]/.test(pw)) score++;
-  return score; // 0-4
-}
+  // ─── Validation ───
 
-/* ── Form utilities ──────────────────────────────────────────── */
-export function setFieldError(inputEl, errorEl, msg) {
-  inputEl.closest('.form-group')?.classList.add('error');
-  if (errorEl) errorEl.textContent = msg;
-}
-export function clearFieldError(inputEl) {
-  inputEl.closest('.form-group')?.classList.remove('error');
-}
-export function clearAllErrors(form) {
-  form.querySelectorAll('.form-group.error').forEach((g) => g.classList.remove('error'));
-}
+  function validateEmail(email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
+  }
 
-/* ── Login flow (mock) ───────────────────────────────────────── */
-export async function performLogin(email, password) {
-  // Mock: accept any valid-format credentials
-  await new Promise((r) => setTimeout(r, 1200));
+  function validatePassword(password) {
+    return password.length >= 8;
+  }
 
-  // Simulate wrong password
-  if (password === 'wrong') throw new Error('Invalid email or password.');
+  // ─── Login Form ───
 
-  const user = {
-    id: 'u_' + Date.now(),
-    name: email.split('@')[0].charAt(0).toUpperCase() + email.split('@')[0].slice(1),
-    email,
-    avatar: email.charAt(0).toUpperCase(),
-    joinedAt: new Date().toISOString(),
+  function initLoginForm() {
+    redirectIfLoggedIn();
+
+    const form = document.getElementById('login-form');
+    if (!form) return;
+
+    // Toggle password visibility
+    document.getElementById('toggle-pw')?.addEventListener('click', () => {
+      const pw = document.getElementById('password');
+      pw.type = pw.type === 'password' ? 'text' : 'password';
+    });
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      clearErrors();
+
+      const email    = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+
+      // Client-side validation
+      let valid = true;
+
+      if (!email || !validateEmail(email)) {
+        showFieldError('email-error', 'Please enter a valid email address.');
+        document.getElementById('email').classList.add('is-invalid');
+        valid = false;
+      }
+
+      if (!password) {
+        showFieldError('password-error', 'Password is required.');
+        document.getElementById('password').classList.add('is-invalid');
+        valid = false;
+      }
+
+      if (!valid) return;
+
+      // Submit
+      Utils.setButtonLoading('login-btn', 'login-spinner', true);
+      Utils.hideAlert('alert-box');
+
+      try {
+        const data = await API.login({ email, password });
+        setToken(data.access_token);
+        setUser(data.user);
+        window.location.href = 'dashboard.html';
+      } catch (err) {
+        Utils.showAlert('alert-box', err.message || 'Login failed. Please try again.', 'error');
+      } finally {
+        Utils.setButtonLoading('login-btn', 'login-spinner', false);
+      }
+    });
+  }
+
+  // ─── Register Form ───
+
+  function initRegisterForm() {
+    redirectIfLoggedIn();
+
+    const form = document.getElementById('register-form');
+    if (!form) return;
+
+    document.getElementById('toggle-pw')?.addEventListener('click', () => {
+      const pw = document.getElementById('password');
+      pw.type = pw.type === 'password' ? 'text' : 'password';
+    });
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      clearErrors();
+
+      const name            = document.getElementById('name').value.trim();
+      const email           = document.getElementById('email').value.trim();
+      const password        = document.getElementById('password').value;
+      const confirmPassword = document.getElementById('confirm-password').value;
+
+      let valid = true;
+
+      if (!name || name.length < 2) {
+        showFieldError('name-error', 'Please enter your full name (at least 2 characters).');
+        document.getElementById('name').classList.add('is-invalid');
+        valid = false;
+      }
+
+      if (!email || !validateEmail(email)) {
+        showFieldError('email-error', 'Please enter a valid email address.');
+        document.getElementById('email').classList.add('is-invalid');
+        valid = false;
+      }
+
+      if (!validatePassword(password)) {
+        showFieldError('password-error', 'Password must be at least 8 characters.');
+        document.getElementById('password').classList.add('is-invalid');
+        valid = false;
+      }
+
+      if (password !== confirmPassword) {
+        showFieldError('confirm-password-error', 'Passwords do not match.');
+        document.getElementById('confirm-password').classList.add('is-invalid');
+        valid = false;
+      }
+
+      if (!valid) return;
+
+      Utils.setButtonLoading('register-btn', 'register-spinner', true);
+      Utils.hideAlert('alert-box');
+
+      try {
+        await API.register({ name, email, password });
+        Utils.showAlert('alert-box', 'Account created! Redirecting to login...', 'success');
+        setTimeout(() => { window.location.href = 'login.html'; }, 1500);
+      } catch (err) {
+        Utils.showAlert('alert-box', err.message || 'Registration failed. Please try again.', 'error');
+      } finally {
+        Utils.setButtonLoading('register-btn', 'register-spinner', false);
+      }
+    });
+  }
+
+  // ─── Helpers ───
+
+  function showFieldError(id, message) {
+    const el = document.getElementById(id);
+    if (el) el.textContent = message;
+  }
+
+  function clearErrors() {
+    document.querySelectorAll('.field-error').forEach(el => el.textContent = '');
+    document.querySelectorAll('.is-invalid').forEach(el => el.classList.remove('is-invalid'));
+  }
+
+  // ─── Auto-init based on page ───
+
+  function init() {
+    const page = window.location.pathname.split('/').pop();
+
+    if (page === 'login.html' || page === '') {
+      initLoginForm();
+    } else if (page === 'register.html') {
+      initRegisterForm();
+    } else if (page === 'dashboard.html') {
+      requireAuth();
+    }
+  }
+
+  // Run on DOM ready
+  document.addEventListener('DOMContentLoaded', init);
+
+  return {
+    getToken,
+    setToken,
+    getUser,
+    setUser,
+    isLoggedIn,
+    logout,
+    requireAuth,
+    redirectIfLoggedIn
   };
-  const token = 'mock_token_' + btoa(email + ':' + Date.now());
-  return { user, token };
-}
 
-/* ── Register flow (mock) ────────────────────────────────────── */
-export async function performRegister(name, email, password) {
-  await new Promise((r) => setTimeout(r, 1400));
+})();
 
-  if (email === 'taken@example.com') throw new Error('This email is already registered.');
-
-  const user = {
-    id: 'u_' + Date.now(),
-    name,
-    email,
-    avatar: name.charAt(0).toUpperCase(),
-    joinedAt: new Date().toISOString(),
-  };
-  const token = 'mock_token_' + btoa(email + ':' + Date.now());
-  return { user, token };
-}
-
-/* ── Logout ──────────────────────────────────────────────────── */
-export function logout() {
-  clearSession();
-  window.location.href = 'index.html';
-}
+window.Auth = Auth;
