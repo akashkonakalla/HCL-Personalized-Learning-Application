@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/x-icon" href="assests/nobgrobo.png" />
+  <title>Create Account - HCL Personalized Learn AI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/auth.css" />
+</head>
+<body>
+  <div class="noise-overlay"></div>
+  <div class="auth-bg">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+  </div>
+
+  <div class="auth-container">
+    <div class="auth-card">
+      <div class="auth-logo">
+        <a href="index.html">
+          <!-- <span class="logo-icon">⬡</span> -->
+           <img src="assests/nobgrobo.png" alt="HCL Personalized Learn AI logo" class="logo-img" />
+          <span class="logo-text">HCL Personalized Learn AI</span>
+        </a>
+      </div>
+
+      <div class="auth-header">
+        <h1>Create your account</h1>
+        <p>Start your personalized learning journey today</p>
+      </div>
+
+      <div id="alert-box" class="alert hidden"></div>
+
+      <form id="register-form" class="auth-form" novalidate>
+        <div class="form-group">
+          <label for="name">Full Name</label>
+          <div class="input-wrapper">
+            <span class="input-icon">👤</span>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              placeholder="Your full name"
+              required
+              autocomplete="name"
+            />
+          </div>
+          <span class="field-error" id="name-error"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email</label>
+          <div class="input-wrapper">
+            <span class="input-icon">✉</span>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              placeholder="you@example.com"
+              required
+              autocomplete="email"
+            />
+          </div>
+          <span class="field-error" id="email-error"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <div class="input-wrapper">
+            <span class="input-icon">🔒</span>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              placeholder="Min 8 characters"
+              required
+              autocomplete="new-password"
+            />
+            <button type="button" class="toggle-pw" id="toggle-pw" aria-label="Toggle password">👁</button>
+          </div>
+          <span class="field-error" id="password-error"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="confirm-password">Confirm Password</label>
+          <div class="input-wrapper">
+            <span class="input-icon">🔒</span>
+            <input
+              type="password"
+              id="confirm-password"
+              name="confirm_password"
+              placeholder="Repeat password"
+              required
+              autocomplete="new-password"
+            />
+          </div>
+          <span class="field-error" id="confirm-password-error"></span>
+        </div>
+
+        <button type="submit" class="btn-primary btn-full" id="register-btn">
+          <span class="btn-text">Create Account</span>
+          <span class="btn-spinner hidden" id="register-spinner">⟳</span>
+        </button>
+      </form>
+
+      <div class="auth-footer">
+        <p>Already have an account? <a href="login.html">Sign in</a></p>
+      </div>
+    </div>
+
+    <div class="auth-side">
+      <div class="auth-side-content">
+        <h2>Your AI-Powered Tutor</h2>
+        <p>LearnSphere AI adapts to your knowledge level and delivers personalized content for any topic you want to master.</p>
+        <div class="side-steps">
+          <div class="side-step">
+            <div class="step-num">1</div>
+            <div>Enter any topic you want to learn</div>
+          </div>
+          <div class="side-step">
+            <div class="step-num">2</div>
+            <div>Take an AI-generated diagnostic quiz</div>
+          </div>
+          <div class="side-step">
+            <div class="step-num">3</div>
+            <div>Receive personalized study materials</div>
+          </div>
+          <div class="side-step">
+            <div class="step-num">4</div>
+            <div>Get guided by your AI tutor</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/utils.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+</body>
+</html>
