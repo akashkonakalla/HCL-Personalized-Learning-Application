@@ -3,146 +3,142 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sign Up — LearnAI</title>
-  <link rel="stylesheet" href="css/style.css" />
+  <link rel="icon" type="image/x-icon" href="assests/nobgrobo.png" />
+  <title>Create Account - HCL Personalized Learn AI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/auth.css" />
 </head>
 <body>
-<div id="toast-container"></div>
-
-<div class="auth-page">
-  <!-- Left brand panel -->
-  <div class="auth-left">
-    <div class="auth-left__content">
-      <a href="index.html" class="auth-left__logo">
-        <div class="auth-left__logo-icon"><img src="assests/logonobg.png" alt="LearnAI Logo" /></div>
-       AdaptLearn<span>AI</span>
-      </a>
-
-      <h2 class="auth-left__title">
-        Start your <em>AI-powered</em><br/>
-        learning<br/>
-        adventure
-      </h2>
-      <p class="auth-left__subtitle">
-        Join 50,000+ students already using LearnAI to study smarter. Get personalized guides, quizzes, and an AI tutor that never sleeps.
-      </p>
-
-      <div class="auth-features">
-        <div class="auth-feature">
-          <div class="auth-feature__icon" style="background:rgba(91,99,245,0.2)">🆓</div>
-          <div class="auth-feature__text">
-            <strong>Free Forever Plan</strong>
-            <span>Get started with no credit card needed</span>
-          </div>
-        </div>
-        <div class="auth-feature">
-          <div class="auth-feature__icon" style="background:rgba(52,213,200,0.2)">⚡</div>
-          <div class="auth-feature__text">
-            <strong>Instant AI Generation</strong>
-            <span>Content ready in seconds, not hours</span>
-          </div>
-        </div>
-        <div class="auth-feature">
-          <div class="auth-feature__icon" style="background:rgba(245,166,35,0.2)">🎓</div>
-          <div class="auth-feature__text">
-            <strong>Any Subject, Any Level</strong>
-            <span>From high school to university and beyond</span>
-          </div>
-        </div>
-      </div>
-    </div>
+  <div class="noise-overlay"></div>
+  <div class="auth-bg">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
   </div>
 
-  <!-- Right form panel -->
-  <div class="auth-right">
+  <div class="auth-container">
     <div class="auth-card">
-      <div class="auth-card__header">
-        <h1 class="auth-card__title">Create Account</h1>
-        <p class="auth-card__subtitle">
-          Already have an account? <a href="login.html">Sign in →</a>
-        </p>
+      <div class="auth-logo">
+        <a href="index.html">
+          <!-- <span class="logo-icon">⬡</span> -->
+           <img src="assests/nobgrobo.png" alt="HCL Personalized Learn AI logo" class="logo-img" />
+          <span class="logo-text">HCL Personalized Learn AI</span>
+        </a>
       </div>
 
-      <form class="form" id="register-form" novalidate>
-        <!-- Name -->
+      <div class="auth-header">
+        <h1>Create your account</h1>
+        <p>Start your personalized learning journey today</p>
+      </div>
+
+      <div id="alert-box" class="alert hidden"></div>
+
+      <form id="register-form" class="auth-form" novalidate>
         <div class="form-group">
           <label for="name">Full Name</label>
-          <div class="input-wrap">
+          <div class="input-wrapper">
+            <span class="input-icon">👤</span>
             <input
               type="text"
               id="name"
-              class="form-input"
+              name="name"
               placeholder="Your full name"
-              autocomplete="name"
               required
+              autocomplete="name"
             />
-            <span class="input-icon">👤</span>
           </div>
-          <span class="form-error" id="name-error"></span>
+          <span class="field-error" id="name-error"></span>
         </div>
 
-        <!-- Email -->
         <div class="form-group">
-          <label for="email">Email Address</label>
-          <div class="input-wrap">
+          <label for="email">Email</label>
+          <div class="input-wrapper">
+            <span class="input-icon">✉</span>
             <input
               type="email"
               id="email"
-              class="form-input"
+              name="email"
               placeholder="you@example.com"
-              autocomplete="email"
               required
+              autocomplete="email"
             />
-            <span class="input-icon">✉️</span>
           </div>
-          <span class="form-error" id="email-error"></span>
+          <span class="field-error" id="email-error"></span>
         </div>
 
-        <!-- Password -->
         <div class="form-group">
           <label for="password">Password</label>
-          <div class="input-wrap">
+          <div class="input-wrapper">
+            <span class="input-icon">🔒</span>
             <input
               type="password"
               id="password"
-              class="form-input"
-              placeholder="Min. 6 characters"
-              autocomplete="new-password"
+              name="password"
+              placeholder="Min 8 characters"
               required
+              autocomplete="new-password"
             />
-            <span class="input-icon">🔒</span>
-            <button type="button" class="input-toggle" id="toggle-password" aria-label="Toggle password">👁</button>
+            <button type="button" class="toggle-pw" id="toggle-pw" aria-label="Toggle password">👁</button>
           </div>
-          <div class="password-strength">
-            <div class="strength-bar"></div>
-            <div class="strength-bar"></div>
-            <div class="strength-bar"></div>
-            <div class="strength-bar"></div>
-          </div>
-          <span class="form-error" id="pass-error"></span>
+          <span class="field-error" id="password-error"></span>
         </div>
 
-        <button type="submit" class="form-submit" id="submit-btn">
-          Create Account →
+        <div class="form-group">
+          <label for="confirm-password">Confirm Password</label>
+          <div class="input-wrapper">
+            <span class="input-icon">🔒</span>
+            <input
+              type="password"
+              id="confirm-password"
+              name="confirm_password"
+              placeholder="Repeat password"
+              required
+              autocomplete="new-password"
+            />
+          </div>
+          <span class="field-error" id="confirm-password-error"></span>
+        </div>
+
+        <button type="submit" class="btn-primary btn-full" id="register-btn">
+          <span class="btn-text">Create Account</span>
+          <span class="btn-spinner hidden" id="register-spinner">⟳</span>
         </button>
-
-        <div class="divider">or sign up with</div>
-
-        <button type="button" class="oauth-btn" onclick="showToast('Google auth coming soon!','info')">
-          <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
-          Sign up with Google
-        </button>
-
-        <p class="auth-footer-text">
-          By creating an account, you agree to our
-          <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.
-        </p>
       </form>
+
+      <div class="auth-footer">
+        <p>Already have an account? <a href="login.html">Sign in</a></p>
+      </div>
+    </div>
+
+    <div class="auth-side">
+      <div class="auth-side-content">
+        <h2>Your AI-Powered Tutor</h2>
+        <p>LearnSphere AI adapts to your knowledge level and delivers personalized content for any topic you want to master.</p>
+        <div class="side-steps">
+          <div class="side-step">
+            <div class="step-num">1</div>
+            <div>Enter any topic you want to learn</div>
+          </div>
+          <div class="side-step">
+            <div class="step-num">2</div>
+            <div>Take an AI-generated diagnostic quiz</div>
+          </div>
+          <div class="side-step">
+            <div class="step-num">3</div>
+            <div>Receive personalized study materials</div>
+          </div>
+          <div class="side-step">
+            <div class="step-num">4</div>
+            <div>Get guided by your AI tutor</div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-</div>
 
-<script type="module" src="js/register.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
 </body>
 </html>
