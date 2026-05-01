@@ -88,9 +88,9 @@ HCL-Personalized-learning-ai/
 
 ### Prerequisites
 
-- Python Version 3.11+ (https://www.python.org/downloads/release/python-3119/)
-              - Windows Installer x64 (https://www.python.org/ftp/python/3.11.9/python-3.11.9-amd64.exe)
-              - MacOS Installer x64   (https://www.python.org/ftp/python/3.11.9/python-3.11.9-macos11.pkg)
+- Python Version 3.11+ (https://www.python.org/downloads/release/python-3119/) or
+- Click to Download (Python 3.11.9) 👉 [**Click to download Windows Installer x64**](https://www.python.org/ftp/python/3.11.9/python-3.11.9-amd64.exe), 
+  [**Click to download MacOS Installer x64**](https://www.python.org/ftp/python/3.11.9/python-3.11.9-macos11.pkg)
 - A [Supabase](https://supabase.com) account (free tier works)
 - A [Google AI Studio](https://aistudio.google.com) API key (Gemini)
 
