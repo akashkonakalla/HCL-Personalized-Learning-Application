@@ -99,7 +99,7 @@ HCL-Personalized-learning-ai/
 ### 1. Clone the Repository
 
 ```bash
-git https://github.com/akashkonakalla/HCL-Personalized-Learning-Application.git
+git clone https://github.com/akashkonakalla/HCL-Personalized-Learning-Application.git
 cd  HCL-Personalized-Learning-Application
 ```
 
