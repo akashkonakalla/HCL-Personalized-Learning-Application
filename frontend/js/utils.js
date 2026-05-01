@@ -1,6 +1,6 @@
 /**
  * utils.js — Global helper functions
- * LearnAI — Personalized Learning Assistant
+ * HCL Personalized Learning AI — Personalized Learning Assistant
  */
 
 const Utils = (() => {

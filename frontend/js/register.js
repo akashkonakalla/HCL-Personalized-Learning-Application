@@ -75,7 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
     try {
       const { user, token } = await performRegister(name, email, password);
       setSession(token, user);
-      showToast(`Welcome to LearnAI, ${user.name}! 🚀`, 'success');
+      showToast(`Welcome to Personalized Learning, ${user.name}! 🚀`, 'success');
       setTimeout(() => { window.location.href = 'dashboard.html'; }, 900);
     } catch (err) {
       submitBtn.disabled = false;

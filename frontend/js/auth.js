@@ -44,17 +44,19 @@ const Auth = (() => {
   // ─── Auth Guard ───
   // Call this on protected pages to redirect if not logged in
   // TEMPORARY: For development, we can bypass auth and go straight to quiz step with a preset topic
-  // function requireAuth() {
-  //   if (!isLoggedIn()) {
-  //     window.location.href = 'login.html';
-  //     return false;
-  //   }
-  //   return true;
-  // }
-   
   function requireAuth() {
-  return true; // TEMP BYPASS
-}
+    if (!isLoggedIn()) {
+      window.location.href = 'login.html';
+      return false;
+    }
+    return true;
+  }
+   
+//   function requireAuth() {
+//   return true; // TEMP BYPASS
+// }
+
+
   // ─── Redirect Logged-in Users ───
   // Call on login/register pages
 

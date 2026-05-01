@@ -39,12 +39,12 @@ const Dashboard = (() => {
 
   // ─── Init ───
   // TEMPORARY: For development, we can bypass auth and go straight to quiz step with a preset topic
-  // function init() {
-  //   // Require auth
-  //   if (!Auth.isLoggedIn()) {
-  //     window.location.href = 'login.html';
-  //     return;
-  //   }
+  function init() {
+    // Require auth
+    if (!Auth.isLoggedIn()) {
+      window.location.href = 'login.html';
+      return;
+    }
 
     populateUserInfo();
     bindGlobalEvents();
