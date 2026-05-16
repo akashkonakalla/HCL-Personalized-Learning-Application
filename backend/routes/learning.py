@@ -164,14 +164,18 @@ async def generate_content_endpoint(
         )
 
     return {
-        "topic":           topic,
-        "level":           payload.level,
-        "summary":         content.get("summary", ""),
-        "key_concepts":    content.get("key_concepts", []),
-        "details":         content.get("details", ""),
-        "flashcards":      content.get("flashcards", []),
-        "recommendations": content.get("recommendations", {}),
-        "agent_intro":     content.get("agent_intro", "")
+        "topic":                    topic,
+        "level":                    payload.level,
+        "summary":                  content.get("summary", ""),
+        "key_concepts":             content.get("key_concepts", []),
+        "deep_dive":                content.get("deep_dive", ""),
+        "real_world_applications":  content.get("real_world_applications", ""),
+        "viva_voice":               content.get("viva_voice", ""),
+        "best_practices":           content.get("best_practices", ""),
+        "learning_roadmap":         content.get("learning_roadmap", ""),
+        "flashcards":               content.get("flashcards", []),
+        "recommendations":          content.get("recommendations", {}),
+        "agent_intro":              content.get("agent_intro", ""),
     }
 
 

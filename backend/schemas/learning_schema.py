@@ -14,7 +14,7 @@ class QuizGenerateRequest(BaseModel):
 
 class QuizQuestion(BaseModel):
     question: str
-    options: List[str] = Field(..., min_length=4, max_length=4)
+    options: List[str] = Field(..., min_length=4)  # At least 4 options required
     correct_answer: str
 
 
@@ -65,13 +65,21 @@ class Recommendations(BaseModel):
 
 
 class ContentGenerateResponse(BaseModel):
+    # Echoed from the request so the frontend doesn't need extra state
     topic: str
     level: str
+    # 7 structured content sections
     summary: str
-    key_concepts: Any          # String or list of concept objects
-    details: str
+    key_concepts: Any                   # List[{term, definition}] or raw string
+    deep_dive: str
+    real_world_applications: str
+    viva_voice: str
+    best_practices: str
+    learning_roadmap: str
+    # Interactive components
     flashcards: List[Flashcard]
     recommendations: Recommendations
+    # AI tutor personalised greeting
     agent_intro: Optional[str] = None
 
 

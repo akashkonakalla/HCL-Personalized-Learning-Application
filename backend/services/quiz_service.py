@@ -10,17 +10,26 @@ from utils.helpers import classify_level, safe_int
 
 async def generate_quiz(topic: str) -> Dict[str, Any]:
     """
-    Generate a 10-question diagnostic quiz for a topic.
+    Generate a 10-question mixed-format diagnostic quiz for a topic.
+
+    The question set follows a 4-type cognitive distribution (enforced by the prompt):
+    - Questions 1–3:  Conceptual  — definitions, principles, core theory
+    - Questions 4–6:  Scenario-based — realistic situations requiring applied judgment
+    - Questions 7–8:  Analytical  — compare/contrast, trade-off evaluation
+    - Questions 9–10: Advanced / edge-case — deep nuance, gotchas, subtle behaviour
 
     Args:
-        topic: Topic string.
+        topic: The topic string (2-120 characters).
 
     Returns:
-        { topic, questions: [{ question, options, correct_answer }] }
+        { topic: str, questions: [{ question, options, correct_answer }] }
+
+    Raises:
+        ValueError: If Gemini returns fewer than 5 valid questions.
     """
     questions = await gemini_generate_quiz(topic)
     return {
-        "topic": topic,
+        "topic":     topic,
         "questions": questions
     }
 
@@ -31,11 +40,12 @@ def evaluate_quiz(
     questions: List[Dict[str, Any]]
 ) -> Dict[str, Any]:
     """
-    Evaluate quiz answers and compute score, level, and breakdown.
+    Evaluate quiz answers and compute score, level, and answer-by-answer breakdown.
 
     Args:
-        topic: Topic string.
-        answers: Dict mapping question index (str) to selected option index (int).
+        topic:     Topic string.
+        answers:   Dict mapping question index (str) to selected option index (int).
+                   e.g. { "0": 2, "1": 0, ... }
         questions: Full question list with correct_answer fields.
 
     Returns:
@@ -52,7 +62,7 @@ def evaluate_quiz(
         options        = question.get("options", [])
         correct_answer = question.get("correct_answer", "")
 
-        # Get user's selected option index
+        # Get user's selected option index (answers keyed by string index)
         selected_idx = answers.get(str(idx))
         user_answer  = None
 

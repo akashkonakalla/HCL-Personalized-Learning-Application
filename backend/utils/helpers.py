@@ -30,6 +30,8 @@ def extract_json_from_text(text: str) -> Optional[Any]:
     Extract and parse JSON from a text string that may contain
     markdown fences or surrounding prose.
 
+    Uses bracket-depth matching for large responses where regex fails.
+
     Args:
         text: Raw text possibly containing JSON.
 
@@ -43,24 +45,45 @@ def extract_json_from_text(text: str) -> Optional[Any]:
     text = re.sub(r"```(?:json)?\s*", "", text)
     text = text.replace("```", "").strip()
 
-    # Try direct parse first
+    # Try direct parse first (fastest path)
     try:
         return json.loads(text)
     except json.JSONDecodeError:
         pass
 
-    # Try to find a JSON object or array in the text
-    patterns = [
-        r'\{.*\}',   # JSON object
-        r'\[.*\]',   # JSON array
-    ]
-    for pattern in patterns:
-        match = re.search(pattern, text, re.DOTALL)
-        if match:
-            try:
-                return json.loads(match.group())
-            except json.JSONDecodeError:
+    # Bracket-depth matching — finds the outermost { } or [ ] block.
+    # Far more reliable than greedy regex for large nested JSON.
+    for start_char, end_char in [('{', '}'), ('[', ']')]:
+        start_idx = text.find(start_char)
+        if start_idx == -1:
+            continue
+
+        depth = 0
+        in_string = False
+        escape_next = False
+
+        for i, ch in enumerate(text[start_idx:], start=start_idx):
+            if escape_next:
+                escape_next = False
                 continue
+            if ch == '\\' and in_string:
+                escape_next = True
+                continue
+            if ch == '"':
+                in_string = not in_string
+                continue
+            if in_string:
+                continue
+            if ch == start_char:
+                depth += 1
+            elif ch == end_char:
+                depth -= 1
+                if depth == 0:
+                    candidate = text[start_idx:i + 1]
+                    try:
+                        return json.loads(candidate)
+                    except json.JSONDecodeError:
+                        break  # try next bracket type
 
     return None
 

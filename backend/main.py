@@ -15,10 +15,10 @@ from routes.learning import router as learning_router
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """Application lifecycle events."""
-    print(f"🚀 PERSONALIZED LEARNING AI API starting on port {settings.PORT}")
-    print(f"   Environment: {settings.ENVIRONMENT}")
+    print(f"[INFO] PERSONALIZED LEARNING AI API starting on port {settings.PORT}")
+    print(f"       Environment: {settings.ENVIRONMENT}")
     yield
-    print("🛑 PERSONALIZED LEARNING AI API shutting down")
+    print("[INFO] PERSONALIZED LEARNING AI API shutting down")
 
 
 app = FastAPI(
