@@ -1,107 +1,154 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+  <script>if ('scrollRestoration' in history) history.scrollRestoration = 'manual';</script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="icon" type="image/x-icon" href="assets/nobgrobo.png" />
-  <title>Sign In - Personalized Learning AI</title>
+  <meta name="description"
+    content="Sign in to Personalized Learning AI — your adaptive AI-powered learning platform." />
+  <meta name="theme-color" content="#0F172A" />
+  <link rel="icon" type="image/svg+xml" href="assets/logo-p.svg" />
+  <title>Sign In — Personalized Learning AI</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800;900&display=swap"
+    rel="stylesheet" />
   <link rel="stylesheet" href="css/auth.css" />
 </head>
+
 <body>
-  <div class="noise-overlay"></div>
-  <div class="auth-bg">
+
+  <div class="noise-overlay" aria-hidden="true"></div>
+  <div class="auth-bg" aria-hidden="true">
     <div class="orb orb-1"></div>
     <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
   </div>
 
-  <div class="auth-container">
+  <main class="auth-container" role="main">
+
+    <!-- ── Left: Form Panel ── -->
     <div class="auth-card">
+
+      <!-- P Letter Logo -->
       <div class="auth-logo">
-        <a href="index.html">
-          <!-- <span class="logo-icon">⬡</span> -->
-           <img src="assets/nobgrobo.png" alt="Personalized Learn AI Logo" class="logo-icon" />
-          <span class="logo-text">Personalized Learning AI</span>
+        <a href="index.html" aria-label="Go to homepage">
+          <img src="assets/logo-p.svg" class="p-logo-sm" alt="Personalized AI Logo" aria-hidden="true" />
+          <span class="logo-text">Personalized Learning <span class="logo-text-accent"> AI</span></span>
         </a>
       </div>
 
-      <div class="auth-header">
+      <!-- Header -->
+      <header class="auth-header">
         <h1>Welcome back</h1>
         <p>Sign in to continue your learning journey</p>
-      </div>
+      </header>
 
-      <div id="alert-box" class="alert hidden"></div>
+      <!-- Alert -->
+      <div id="alert-box" class="alert hidden" role="alert" aria-live="polite"></div>
 
-      <form id="login-form" class="auth-form" novalidate>
+      <!-- Form -->
+      <form id="login-form" class="auth-form" novalidate aria-label="Sign in form">
+
         <div class="form-group">
-          <label for="email">Email</label>
+          <label for="email">Email address</label>
           <div class="input-wrapper">
-            <span class="input-icon">✉</span>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              placeholder="you@example.com"
-              required
-              autocomplete="email"
-            />
+            <span class="input-icon" aria-hidden="true">✉</span>
+            <input type="email" id="email" name="email" placeholder="you@example.com" required autocomplete="email"
+              aria-describedby="email-error" aria-required="true" />
           </div>
-          <span class="field-error" id="email-error"></span>
+          <span class="field-error" id="email-error" role="alert"></span>
         </div>
 
         <div class="form-group">
-          <label for="password">Password</label>
-          <div class="input-wrapper">
-            <span class="input-icon">🔒</span>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              placeholder="••••••••"
-              required
-              autocomplete="current-password"
-            />
-            <button type="button" class="toggle-pw" id="toggle-pw" aria-label="Toggle password">👁</button>
+          <div class="form-row">
+            <label for="password">Password</label>
           </div>
-          <span class="field-error" id="password-error"></span>
+          <div class="input-wrapper">
+            <span class="input-icon" aria-hidden="true">🔒</span>
+            <input type="password" id="password" name="password" placeholder="••••••••" required
+              autocomplete="current-password" aria-describedby="password-error" aria-required="true" />
+            <button type="button" class="toggle-pw" id="toggle-pw" aria-label="Show or hide password">👁</button>
+          </div>
+          <span class="field-error" id="password-error" role="alert"></span>
         </div>
 
-        <button type="submit" class="btn-primary btn-full" id="login-btn">
+        <button type="submit" class="btn-primary btn-full" id="login-btn" aria-label="Sign in">
           <span class="btn-text">Sign In</span>
-          <span class="btn-spinner hidden" id="login-spinner">⟳</span>
+          <span class="btn-spinner hidden" id="login-spinner" aria-hidden="true">⟳</span>
         </button>
+
       </form>
 
-      <div class="auth-footer">
-        <p>Don't have an account? <a href="register.html">Create one</a></p>
-      </div>
+      <p class="auth-footer">
+        Don't have an account? <a href="register.html" id="register-link">Create one free →</a>
+      </p>
     </div>
 
-    <div class="auth-side">
+    <!-- ── Right: Social Proof Panel ── -->
+    <aside class="auth-side" aria-label="Platform benefits">
       <div class="auth-side-content">
-        <div class="testimonial">
-          <div class="testimonial-quote">"PERSONALIZED LEARNING AI diagnosed my knowledge gaps in minutes and gave me exactly the study plan I needed."</div>
-          <div class="testimonial-author">
-            <div class="author-avatar">U</div>
+
+        <blockquote class="testimonial">
+          <p class="testimonial-quote">
+            Personalized Learning AI diagnosed my knowledge gaps in minutes and gave me exactly the study plan I needed
+            to ace my exams."
+          </p>
+          <footer class="testimonial-author">
+            <div class="author-avatar" aria-hidden="true">E</div>
             <div>
               <div class="author-name">Existing User</div>
               <div class="author-role">Computer Science Student</div>
             </div>
-          </div>
-        </div>
-        <div class="side-features">
-          <div class="side-feature"><span>✓</span> AI-powered diagnostics</div>
-          <div class="side-feature"><span>✓</span> Personalized at every level</div>
-          <div class="side-feature"><span>✓</span> Downloadable study materials</div>
-        </div>
+          </footer>
+        </blockquote>
+
+        <ul class="side-features" role="list" aria-label="Platform highlights">
+          <li class="side-feature" role="listitem">
+            <span class="side-feature-check" aria-hidden="true">✓</span>
+            AI-powered knowledge diagnostics
+          </li>
+          <li class="side-feature" role="listitem">
+            <span class="side-feature-check" aria-hidden="true">✓</span>
+            Study materials at your exact level
+          </li>
+          <li class="side-feature" role="listitem">
+            <span class="side-feature-check" aria-hidden="true">✓</span>
+            Smart flashcards &amp; active recall
+          </li>
+          <li class="side-feature" role="listitem">
+            <span class="side-feature-check" aria-hidden="true">✓</span>
+            Personal AI tutor available 24/7
+          </li>
+          <li class="side-feature" role="listitem">
+            <span class="side-feature-check" aria-hidden="true">✓</span>
+            Export study guides as PDF, HTML, or Markdown
+          </li>
+        </ul>
+
       </div>
-    </div>
-  </div>
+    </aside>
+
+  </main>
 
   <script src="js/utils.js"></script>
   <script src="js/api.js"></script>
   <script src="js/auth.js"></script>
+  <script>
+    // Force scroll to top on every load/refresh
+    document.addEventListener('DOMContentLoaded', function () {
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+    });
+    window.addEventListener('load', function () {
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+    });
+  </script>
 </body>
+
 </html>

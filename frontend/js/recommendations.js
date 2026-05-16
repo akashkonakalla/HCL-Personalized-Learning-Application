@@ -90,7 +90,7 @@ const Recommendations = (() => {
     return sections;
   }
 
-  /**
+  /** 
    * Create a recommendation card element
    * @param {object} item
    * @returns {HTMLElement}

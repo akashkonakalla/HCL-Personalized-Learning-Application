@@ -16,25 +16,25 @@ const Dashboard = (() => {
 
   // ─── Step → section ID mapping ───
   const STEP_SECTIONS = {
-    topic:           'step-topic',
-    quiz:            'step-quiz',
-    results:         'step-results',
-    content:         'step-content',
-    flashcards:      'step-flashcards',
+    topic: 'step-topic',
+    quiz: 'step-quiz',
+    results: 'step-results',
+    content: 'step-content',
+    flashcards: 'step-flashcards',
     recommendations: 'step-recommendations',
-    agent:           'step-agent',
-    history:         'section-history'
+    agent: 'step-agent',
+    history: 'section-history'
   };
 
   const STEP_TITLES = {
-    topic:           'Start Learning',
-    quiz:            'Diagnostic Quiz',
-    results:         'Quiz Results',
-    content:         'Study Materials',
-    flashcards:      'Flashcards',
+    topic: 'Start Learning',
+    quiz: 'Diagnostic Quiz',
+    results: 'Quiz Results',
+    content: 'Study Materials',
+    flashcards: 'Flashcards',
     recommendations: 'Recommendations',
-    agent:           'AI Tutor',
-    history:         'Learning History'
+    agent: 'AI Tutor',
+    history: 'Learning History'
   };
 
   // ─── Init ───
@@ -59,14 +59,14 @@ const Dashboard = (() => {
     if (!user) return;
 
     const initial = (user.name || 'U')[0].toUpperCase();
-    const name    = user.name || 'User';
-    const email   = user.email || '';
+    const name = user.name || 'User';
+    const email = user.email || '';
 
-    setEl('user-name',    name);
-    setEl('user-email',   email);
-    setEl('user-avatar',  initial);
-    setEl('chip-name',    name.split(' ')[0]);
-    setEl('chip-avatar',  initial);
+    setEl('user-name', name);
+    setEl('user-email', email);
+    setEl('user-avatar', initial);
+    setEl('chip-name', name.split(' ')[0]);
+    setEl('chip-avatar', initial);
   }
 
   // ─── Navigation ───
@@ -86,19 +86,78 @@ const Dashboard = (() => {
 
     // Show target section
     const targetId = STEP_SECTIONS[step];
-    const target   = document.getElementById(targetId);
+    const target = document.getElementById(targetId);
     if (target) target.classList.remove('hidden');
 
     // Update topbar title
     setEl('topbar-title', STEP_TITLES[step] || step);
 
+    // Show/hide topic badge in topbar
+    const badge = document.getElementById('topic-badge');
+    const badgeText = document.getElementById('topic-badge-text');
+    if (badge && badgeText && state.topic && step !== 'topic' && step !== 'history') {
+      badge.classList.remove('hidden');
+      badgeText.textContent = state.topic;
+    } else if (badge) {
+      badge.classList.add('hidden');
+    }
+
     // Update sidebar active links
-    document.querySelectorAll('.sidebar-link').forEach(link => {
+    document.querySelectorAll('.sidebar-link[data-section]').forEach(link => {
       const section = link.dataset.section;
       link.classList.toggle('active', section === (step === 'history' ? 'history' : 'learn'));
+      link.setAttribute('aria-current', link.classList.contains('active') ? 'page' : 'false');
     });
 
+    // Sync journey strip
+    const JOURNEY_ORDER = ['topic', 'quiz', 'results', 'content', 'flashcards', 'recommendations', 'agent'];
+    const currentIdx = JOURNEY_ORDER.indexOf(step);
+    
+    // Determine maximum reachable index based on data
+    let maxIdx = 0; // topic
+    if (state.questions && state.questions.length > 0) maxIdx = 1; // quiz
+    if (state.quizResult) maxIdx = 2; // results
+    if (state.contentData) maxIdx = 6; // all content steps
+
+    document.querySelectorAll('.journey-step[data-step]').forEach(el => {
+      const s = el.dataset.step;
+      const idx = JOURNEY_ORDER.indexOf(s);
+      el.classList.remove('active', 'completed');
+      
+      if (s === step) {
+        el.classList.add('active');
+      } else if (idx <= maxIdx) {
+        el.classList.add('completed');
+      }
+    });
+
+    // Sync sidebar progress dots
+    const DOT_MAP = { topic: 1, quiz: 2, results: 3, content: 4, flashcards: 5, recommendations: 6, agent: 7 };
+    const currentDot = DOT_MAP[step];
+    let maxDot = 1;
+    if (state.questions && state.questions.length > 0) maxDot = 2;
+    if (state.quizResult) maxDot = 3;
+    if (state.contentData) maxDot = 7;
+
+    document.querySelectorAll('.progress-dot[data-dot]').forEach(dot => {
+      const n = parseInt(dot.dataset.dot);
+      dot.classList.remove('done', 'current');
+      
+      if (n === currentDot) {
+        dot.classList.add('current');
+      } else if (n <= maxDot) {
+        dot.classList.add('done');
+      }
+    });
+
+    // Update buttons if we have downstream data
+    const generateBtn = document.getElementById('generate-content-btn');
+    if (generateBtn) {
+      generateBtn.textContent = state.contentData ? 'View Study Materials →' : 'Generate My Study Materials →';
+    }
+
     // Scroll main content to top
+    window.scrollTo({ top: 0, behavior: 'smooth' });
     document.querySelector('.main-content')?.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
@@ -107,7 +166,7 @@ const Dashboard = (() => {
   function showLoader(text = 'Generating with AI...') {
     const loader = document.getElementById('global-loader');
     const loaderText = document.getElementById('loader-text');
-    if (loader)     loader.classList.remove('hidden');
+    if (loader) loader.classList.remove('hidden');
     if (loaderText) loaderText.textContent = text;
   }
 
@@ -118,7 +177,7 @@ const Dashboard = (() => {
   // ─── STEP 1: Topic Input ───
 
   function bindTopicStep() {
-    const startBtn  = document.getElementById('start-learning-btn');
+    const startBtn = document.getElementById('start-learning-btn');
     const topicInput = document.getElementById('topic-input');
 
     startBtn?.addEventListener('click', startLearning);
@@ -146,7 +205,18 @@ const Dashboard = (() => {
       return;
     }
 
+    // If exact same topic and questions exist, skip generation
+    if (state.topic.toLowerCase() === topic.toLowerCase() && state.questions && state.questions.length > 0) {
+      navigateTo('quiz');
+      return;
+    }
+
     state.topic = topic;
+    // Clear downstream state
+    state.questions = [];
+    state.quizResult = null;
+    state.contentData = null;
+    agentHistory = [];
 
     showLoader('Generating your diagnostic quiz...');
 
@@ -178,13 +248,17 @@ const Dashboard = (() => {
       return;
     }
 
+    // Clear content data since we are submitting a new quiz
+    state.contentData = null;
+    agentHistory = [];
+
     showLoader('Evaluating your answers...');
 
     try {
       const payload = Quiz.getSubmitPayload();
-      const result  = await API.submitQuiz({
-        topic:     state.topic,
-        answers:   payload.answers,
+      const result = await API.submitQuiz({
+        topic: state.topic,
+        answers: payload.answers,
         questions: payload.questions
       });
 
@@ -205,28 +279,29 @@ const Dashboard = (() => {
     const { score, level, breakdown } = result;
 
     // Score ring animation
-    const total      = 10;
-    const pct        = score / total;
+    const total = 10;
+    const pct = score / total;
     const circumference = 326.7;
-    const offset     = circumference * (1 - pct);
+    const offset = circumference * (1 - pct);
 
     const ringFill = document.getElementById('ring-fill');
     if (ringFill) {
-      // Inject gradient def into SVG
       const svg = ringFill.closest('svg');
+      // Only inject defs if not already present in HTML
       if (svg && !svg.querySelector('#ring-gradient')) {
         const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
         defs.innerHTML = `
-          <linearGradient id="ring-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stop-color="#7c5cfc"/>
-            <stop offset="100%" stop-color="#4fc4f9"/>
+          <linearGradient id="ring-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#6366F1"/>
+            <stop offset="100%" stop-color="#38BDF8"/>
           </linearGradient>
         `;
         svg.insertBefore(defs, svg.firstChild);
-        ringFill.setAttribute('stroke', 'url(#ring-gradient)');
       }
+      // Ensure stroke uses gradient
+      ringFill.setAttribute('stroke', 'url(#ring-gradient)');
 
-      // Animate
+      // Animate fill
       setTimeout(() => { ringFill.style.strokeDashoffset = offset; }, 100);
     }
 
@@ -234,30 +309,34 @@ const Dashboard = (() => {
 
     // Level badge
     const levelBadge = document.getElementById('results-level-badge');
-    const levelClass  = Utils.getLevelClass(level);
+    const levelClass = Utils.getLevelClass(level);
     if (levelBadge) {
       levelBadge.className = `results-level-badge ${levelClass}`;
     }
-    setEl('results-level-emoji', Utils.getLevelEmoji(level));
-    setEl('results-level-name',  level);
-    setEl('results-heading',     `You're at ${level} Level!`);
-    setEl('results-desc',        Utils.getLevelDescription(level, score));
+    const levelEmojiEl = document.getElementById('results-level-emoji');
+    if (levelEmojiEl) levelEmojiEl.innerHTML = Utils.getLevelEmoji(level);
+    setEl('results-level-name', level);
+    setEl('results-heading', `You're at ${level} Level!`);
+    setEl('results-desc', Utils.getLevelDescription(level, score));
 
     // Breakdown
     Quiz.renderBreakdown(result);
-
-    // Bind generate button
-    document.getElementById('generate-content-btn')?.addEventListener('click', generateContent, { once: true });
   }
 
   function bindResultsStep() {
     // Back button
     document.getElementById('quiz-back-btn')?.addEventListener('click', () => navigateTo('quiz'));
+    document.getElementById('generate-content-btn')?.addEventListener('click', generateContent);
   }
 
   // ─── STEP 4: Content ───
 
   async function generateContent() {
+    if (state.contentData) {
+      navigateTo('content');
+      return;
+    }
+
     showLoader('Generating personalized study materials...');
 
     try {
@@ -371,8 +450,8 @@ const Dashboard = (() => {
       agentHistory.push({ role: 'user', content: message });
 
       const data = await API.chatWithAgent({
-        topic:   state.topic,
-        level:   state.quizResult?.level,
+        topic: state.topic,
+        level: state.quizResult?.level,
         message,
         history: agentHistory
       });
@@ -402,7 +481,7 @@ const Dashboard = (() => {
     const formattedText = Utils.renderMarkdown(text);
 
     msgEl.innerHTML = `
-      <div class="msg-avatar">${isAI ? '🤖' : '👤'}</div>
+      <div class="msg-avatar">${isAI ? '<i class="ph ph-robot"></i>' : '<i class="ph ph-user"></i>'}</div>
       <div class="msg-bubble">${formattedText}</div>
     `;
 
@@ -420,7 +499,7 @@ const Dashboard = (() => {
     el.className = 'agent-message ai';
     el.id = `typing-${id}`;
     el.innerHTML = `
-      <div class="msg-avatar">🤖</div>
+      <div class="msg-avatar"><i class="ph ph-robot"></i></div>
       <div class="msg-bubble" style="opacity:0.6">
         <span style="letter-spacing:2px;font-size:1.1rem">···</span>
       </div>
@@ -509,10 +588,25 @@ const Dashboard = (() => {
       const levelClass = Utils.getLevelClass(item.level);
       return `
         <tr>
-          <td>${Utils.sanitize(item.topic)}</td>
-          <td>${item.score}/10</td>
-          <td><span class="level-pill level-${levelClass}">${Utils.getLevelEmoji(item.level)} ${item.level}</span></td>
-          <td>${Utils.formatDate(item.created_at)}</td>
+          <td>
+            <div class="ht-topic-wrapper">
+              <div class="ht-topic-icon"><i class="ph ph-book-open-text"></i></div>
+              <span class="ht-topic">${Utils.sanitize(item.topic)}</span>
+            </div>
+          </td>
+          <td>
+            <div class="ht-score-wrapper">
+              <span class="ht-score">${item.score}</span>
+              <span class="ht-score-total">/ 10</span>
+            </div>
+          </td>
+          <td>
+            <span class="history-level-badge level-${levelClass}">
+              <span class="level-emoji">${Utils.getLevelEmoji(item.level)}</span>
+              ${item.level}
+            </span>
+          </td>
+          <td class="ht-date">${Utils.formatDate(item.created_at)}</td>
         </tr>
       `;
     }).join('');
@@ -532,14 +626,55 @@ const Dashboard = (() => {
         if (section === 'history') {
           navigateTo('history');
         } else {
-          navigateTo('topic');
+          startOver();
         }
       });
     });
 
-    // Mobile sidebar toggle
+    // Mobile sidebar toggle — also updates aria-expanded
     document.getElementById('sidebar-toggle')?.addEventListener('click', () => {
-      document.getElementById('sidebar')?.classList.toggle('open');
+      const sidebar = document.getElementById('sidebar');
+      const toggle = document.getElementById('sidebar-toggle');
+      const isOpen = sidebar?.classList.toggle('open');
+      toggle?.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    });
+
+    // Step Navigation Handler
+    const handleStepNavigation = (targetStep) => {
+      if (targetStep === 'topic') {
+        navigateTo('topic');
+      } else if (targetStep === 'quiz' && state.questions.length > 0) {
+        navigateTo('quiz');
+      } else if (targetStep === 'results' && state.quizResult) {
+        navigateTo('results');
+      } else if (['content', 'flashcards', 'recommendations', 'agent'].includes(targetStep) && state.contentData) {
+        if (targetStep === 'flashcards' && state.step !== 'flashcards') {
+          goToFlashcards();
+        } else if (targetStep === 'recommendations' && state.step !== 'recommendations') {
+          goToRecommendations();
+        } else if (targetStep === 'agent' && state.step !== 'agent') {
+          goToAgent();
+        } else if (targetStep === 'content' && state.step !== 'content') {
+          navigateTo('content');
+        }
+      }
+    };
+
+    // Journey strip clicks
+    document.querySelectorAll('.journey-step[data-step]').forEach(stepEl => {
+      stepEl.addEventListener('click', () => {
+        if (!stepEl.classList.contains('active') && !stepEl.classList.contains('completed')) return;
+        handleStepNavigation(stepEl.dataset.step);
+      });
+    });
+
+    // Progress dot clicks
+    const DOT_MAP_REVERSE = { 1: 'topic', 2: 'quiz', 3: 'results', 4: 'content', 5: 'flashcards', 6: 'recommendations', 7: 'agent' };
+    document.querySelectorAll('.progress-dot[data-dot]').forEach(dotEl => {
+      dotEl.addEventListener('click', () => {
+        if (!dotEl.classList.contains('current') && !dotEl.classList.contains('done')) return;
+        handleStepNavigation(DOT_MAP_REVERSE[dotEl.dataset.dot]);
+      });
     });
 
     // Step bindings

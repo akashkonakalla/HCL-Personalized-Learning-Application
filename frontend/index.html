@@ -1,91 +1,363 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="icon" type="image/x-icon" href="assets/nobgrobo.png" />
-  <title>Personalized Learning AI</title>
+  <meta name="description"
+    content="Personalized Learning AI — Adaptive AI tutoring that diagnoses your knowledge, adapts to your level, and creates study materials in real time." />
+  <meta name="theme-color" content="#080E1A" />
+  <link rel="icon" type="image/svg+xml" href="assets/logo-p.svg" />
+  <title>Personalized Learning AI — Learn Smarter with AI</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800;900&display=swap"
+    rel="stylesheet" />
   <link rel="stylesheet" href="css/style.css" />
-</head>
-<body>
-  <div class="noise-overlay"></div>
+  <style>
+    /* ── Animated gradient mesh background ── */
+    .mesh-bg {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background: var(--color-bg);
+      overflow: hidden;
+    }
 
-  <nav class="navbar">
-    <div class="nav-logo">
-      <!-- <span class="logo-icon">⬡</span> -->
-      <img src="assets/nobgrobo.png" alt="Personalized Learning AI Logo" class="logo-img" />
-      <span class="logo-text">Personalized Learning AI</span>
-    </div>
+    .mesh-bg::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 10% 20%, rgba(99, 102, 241, 0.14) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 50% at 90% 10%, rgba(56, 189, 248, 0.10) 0%, transparent 55%),
+        radial-gradient(ellipse 50% 60% at 50% 90%, rgba(139, 92, 246, 0.08) 0%, transparent 60%);
+      animation: meshShift 16s ease-in-out infinite alternate;
+    }
+
+    @keyframes meshShift {
+      0% {
+        transform: scale(1) translate(0, 0);
+      }
+
+      50% {
+        transform: scale(1.04) translate(18px, -12px);
+      }
+
+      100% {
+        transform: scale(1) translate(-10px, 8px);
+      }
+    }
+
+    /* ── P Logo Mark ── */
+    .p-logo-mark {
+      width: 38px;
+      height: 38px;
+      flex-shrink: 0;
+    }
+
+    /* ── Stats row ── */
+    .stats-row {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      border-radius: 100px;
+      padding: 6px 6px;
+      width: fit-content;
+      margin-bottom: 52px;
+      animation: fadeInDown 0.6s ease 0.4s both;
+    }
+
+    .stat-pill {
+      padding: 8px 20px;
+      text-align: center;
+    }
+
+    .stat-pill .stat-num {
+      font-size: 1.25rem;
+      font-weight: 800;
+      background: var(--gradient-primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .stat-pill .stat-label {
+      font-size: 0.75rem;
+      color: var(--color-text-muted);
+      font-weight: 500;
+    }
+
+    .stat-pill-divider {
+      width: 1px;
+      height: 34px;
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    /* ── Social proof strip ── */
+    .social-proof {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 0;
+      animation: fadeInDown 0.6s ease 0.5s both;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      margin-top: 52px;
+    }
+
+    .avatar-stack {
+      display: flex;
+    }
+
+    .avatar-chip {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      border: 2px solid var(--color-bg);
+      background: var(--gradient-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: #fff;
+      margin-left: -8px;
+    }
+
+    .avatar-chip:first-child {
+      margin-left: 0;
+    }
+
+    .social-proof-text {
+      font-size: 0.87rem;
+      color: var(--color-text-muted);
+    }
+
+    .social-proof-text strong {
+      color: var(--color-text);
+    }
+
+    /* ── Section number accent ── */
+    .section-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: rgba(99, 102, 241, 0.1);
+      border: 1px solid rgba(99, 102, 241, 0.22);
+      font-family: var(--font-display);
+      font-size: 0.82rem;
+      font-weight: 800;
+      color: var(--color-primary-light);
+      margin-bottom: 14px;
+    }
+
+    /* ── Step cards ── */
+    .step-card {
+      background: linear-gradient(145deg, rgba(255, 255, 255, 0.025) 0%, rgba(255, 255, 255, 0.01) 100%);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      border-radius: 20px;
+      padding: 32px;
+      transition: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .step-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(99, 102, 241, 0.5), transparent);
+      opacity: 0;
+      transition: opacity 0.35s ease;
+    }
+
+    .step-card:hover {
+      border-color: rgba(99, 102, 241, 0.28);
+      transform: translateY(-5px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(99, 102, 241, 0.08);
+    }
+
+    .step-card:hover::before {
+      opacity: 1;
+    }
+
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .step-icon {
+      font-size: 1.8rem;
+      margin-bottom: 16px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 54px;
+      height: 54px;
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.07);
+    }
+
+    /* ── CTA band ── */
+    .cta-band {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    @media (max-width: 768px) {
+      .stats-row {
+        flex-wrap: wrap;
+        border-radius: 16px;
+      }
+
+      .social-proof {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+
+<body style="position:relative; z-index:1;">
+
+  <!-- Animated mesh background -->
+  <div class="mesh-bg" aria-hidden="true"></div>
+  <div class="noise-overlay" aria-hidden="true"></div>
+
+  <!-- ── Navbar ── -->
+  <nav class="navbar" role="navigation" aria-label="Main navigation">
+    <a href="index.html" class="nav-logo" aria-label="Personalized Learning AI Home">
+      <!-- P Letter Logo -->
+      <img src="assets/logo-p.svg" class="p-logo-mark" alt="P logo" aria-hidden="true" />
+      <span class="logo-text">Personalized Learning <span class="logo-text-accent"> AI</span></span>
+    </a>
     <div class="nav-links">
       <a href="#features">Features</a>
-      <a href="#how-it-works">How It Works</a>
-      <a href="login.html" class="btn-ghost">Sign In</a>
-      <a href="register.html" class="btn-primary" style="color:#fff">Get Started</a>
+      <a href="#how-it-works">Process</a>
+      <a href="login.html" class="btn-ghost" id="nav-signin">Sign In</a>
+      <a href="register.html" class="btn-primary" id="nav-cta" style="color:#fff">Get Started Free</a>
     </div>
   </nav>
 
-  <section class="hero">
-    <div class="hero-bg">
+  <!-- ══════════════════════════════════════════
+       HERO
+  ══════════════════════════════════════════ -->
+  <section class="hero" aria-label="Hero" style="position:relative; z-index:1;">
+    <div class="hero-bg" aria-hidden="true">
       <div class="orb orb-1"></div>
       <div class="orb orb-2"></div>
       <div class="orb orb-3"></div>
     </div>
+
     <div class="hero-content">
       <div class="hero-badge">
-        <span class="badge-dot"></span>
+        <span class="badge-dot" aria-hidden="true"></span>
         Powered by HCLTech Batch-5
       </div>
+
       <h1 class="hero-title">
         Learn Smarter,<br />
         <span class="gradient-text">Not Harder</span>
       </h1>
+
       <p class="hero-desc">
-        An AI tutor that diagnoses your knowledge, adapts to your level,
-        and generates personalized study materials — all in real time.
+        An AI tutor that <strong style="color:var(--color-text)">diagnoses your knowledge</strong>, adapts to your exact
+        level, and generates expert-level study materials — all in real time.
       </p>
+
       <div class="hero-cta">
-        <a href="register.html" class="btn-primary btn-lg">Start Learning Free</a>
-        <a href="#how-it-works" class="btn-ghost btn-lg">See How It Works</a>
+        <a href="register.html" class="btn-primary btn-lg" id="hero-cta" style="color:#fff">
+          Start Learning Free →
+        </a>
+        <a href="#how-it-works" class="btn-ghost btn-lg" id="hero-how">
+          See How It Works
+        </a>
       </div>
-      <div class="hero-stats">
-        <div class="stat"><span class="stat-num">10K+</span><span class="stat-label">Topics</span></div>
-        <div class="stat-divider"></div>
-        <div class="stat"><span class="stat-num">3</span><span class="stat-label">Learning Levels</span></div>
-        <div class="stat-divider"></div>
-        <div class="stat"><span class="stat-num">AI</span><span class="stat-label">Adaptive Engine</span></div>
+
+      <!-- Stats row pills -->
+      <div class="stats-row" aria-label="Platform stats">
+        <div class="stat-pill">
+          <div class="stat-num">10K+</div>
+          <div class="stat-label">Topics</div>
+        </div>
+        <div class="stat-pill-divider"></div>
+        <div class="stat-pill">
+          <div class="stat-num">3</div>
+          <div class="stat-label">Levels</div>
+        </div>
+        <div class="stat-pill-divider"></div>
+        <div class="stat-pill">
+          <div class="stat-num">100%</div>
+          <div class="stat-label">Personalised</div>
+        </div>
+        <div class="stat-pill-divider"></div>
+        <div class="stat-pill">
+          <div class="stat-num">AI</div>
+          <div class="stat-label">Powered</div>
+        </div>
+      </div>
+
+      <!-- Social proof -->
+      <div class="social-proof">
+        <div class="avatar-stack" aria-hidden="true">
+          <div class="avatar-chip">A</div>
+          <div class="avatar-chip">R</div>
+          <div class="avatar-chip">S</div>
+          <div class="avatar-chip">P</div>
+        </div>
+        <p class="social-proof-text">
+          <strong>4,000+ learners</strong> already mastering topics with AI
+        </p>
       </div>
     </div>
-    <div class="hero-visual">
+
+    <!-- Dashboard preview -->
+    <div class="hero-visual" aria-hidden="true">
       <div class="dashboard-preview">
         <div class="preview-header">
           <div class="preview-dots">
             <span></span><span></span><span></span>
           </div>
-          <span class="preview-title">Your Learning Dashboard</span>
+          <span class="preview-title">Learning Dashboard</span>
         </div>
         <div class="preview-body">
           <div class="preview-topic-card">
             <div class="preview-badge">Intermediate</div>
             <div class="preview-topic-name">Machine Learning</div>
             <div class="preview-progress">
-              <div class="progress-bar"><div class="progress-fill" style="width:72%"></div></div>
+              <div class="progress-bar">
+                <div class="progress-fill" style="width:72%"></div>
+              </div>
               <span>72%</span>
             </div>
           </div>
           <div class="preview-quiz-card">
             <div class="preview-q">What is gradient descent?</div>
             <div class="preview-options">
-              <div class="preview-opt active">An optimization algorithm</div>
+              <div class="preview-opt active">✓ An optimization algorithm</div>
               <div class="preview-opt">A neural network layer</div>
             </div>
           </div>
           <div class="preview-level-card">
-            <div class="level-emoji">🎯</div>
+            <div class="level-emoji">⚡</div>
             <div class="level-info">
-              <div class="level-label">Your Level</div>
+              <div class="level-label">Diagnosed Level</div>
               <div class="level-value">Intermediate</div>
             </div>
           </div>
@@ -94,103 +366,173 @@
     </div>
   </section>
 
-  <section class="features" id="features">
+  <!-- ══════════════════════════════════════════
+       FEATURES
+  ══════════════════════════════════════════ -->
+  <section class="features" id="features" aria-labelledby="features-heading" style="position:relative; z-index:1;">
     <div class="section-header">
       <div class="section-label">Features</div>
-      <h2>Everything You Need to Master Any Topic</h2>
+      <h2 id="features-heading">Everything You Need to<br /><span class="gradient-text">Master Any Topic</span></h2>
     </div>
-    <div class="features-grid">
-      <div class="feature-card">
-        <div class="feature-icon">🧠</div>
+
+    <div class="features-grid" role="list">
+      <article class="feature-card" role="listitem">
+        <div class="feature-card-glow"></div>
+        <div class="feature-card-header">
+          <div class="feature-icon" aria-hidden="true">🧠</div>
+          <div class="feature-tag"><span class="feature-tag-dot"></span>Core</div>
+        </div>
         <h3>Knowledge Diagnosis</h3>
-        <p>AI-generated quizzes that pinpoint exactly where you stand on any topic before you begin.</p>
-      </div>
-      <div class="feature-card feature-card--highlight">
-        <div class="feature-icon">⚡</div>
-        <h3>Adaptive Content</h3>
-        <p>Study materials generated at your exact proficiency level — Beginner, Intermediate, or Expert.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon">🃏</div>
+        <p>10-question AI quizzes that pinpoint exactly where you stand — before you ever open a textbook.</p>
+      </article>
+
+      <article class="feature-card" role="listitem">
+        <div class="feature-card-glow"></div>
+        <div class="feature-card-header">
+          <div class="feature-icon" aria-hidden="true">⚡</div>
+          <div class="feature-tag"><span class="feature-tag-dot"></span>Adaptive</div>
+        </div>
+        <h3>Level-Adaptive Content</h3>
+        <p>Materials generated at Beginner, Intermediate, or Expert level — matched perfectly to your score.</p>
+      </article>
+
+      <article class="feature-card" role="listitem">
+        <div class="feature-card-glow"></div>
+        <div class="feature-card-header">
+          <div class="feature-icon" aria-hidden="true">🃏</div>
+          <div class="feature-tag"><span class="feature-tag-dot"></span>Memory</div>
+        </div>
         <h3>Smart Flashcards</h3>
-        <p>Auto-generated flashcards from your learning content for active recall practice.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon">🤖</div>
-        <h3>Agentic AI Guide</h3>
-        <p>Proactive next-step suggestions based on your weak areas and learning trajectory.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon">📥</div>
-        <h3>Export Materials</h3>
-        <p>Download your personalized study materials in PDF, DOCX, or Markdown format.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon">📊</div>
+        <p>Auto-generated flashcards with 3D flip interactions for active recall and spaced repetition.</p>
+      </article>
+
+      <article class="feature-card" role="listitem">
+        <div class="feature-card-glow"></div>
+        <div class="feature-card-header">
+          <div class="feature-icon" aria-hidden="true">🤖</div>
+          <div class="feature-tag"><span class="feature-tag-dot"></span>AI</div>
+        </div>
+        <h3>Personal AI Tutor</h3>
+        <p>An agentic AI that reviews your quiz performance and gives proactive, personalised guidance.</p>
+      </article>
+
+      <article class="feature-card" role="listitem">
+        <div class="feature-card-glow"></div>
+        <div class="feature-card-header">
+          <div class="feature-icon" aria-hidden="true">📥</div>
+          <div class="feature-tag"><span class="feature-tag-dot"></span>Export</div>
+        </div>
+        <h3>One-Click Export</h3>
+        <p>Download your personalised study guide as a polished PDF, HTML page, or Markdown file.</p>
+      </article>
+
+      <article class="feature-card" role="listitem">
+        <div class="feature-card-glow"></div>
+        <div class="feature-card-header">
+          <div class="feature-icon" aria-hidden="true">📊</div>
+          <div class="feature-tag"><span class="feature-tag-dot"></span>Progress</div>
+        </div>
         <h3>Progress Tracking</h3>
-        <p>Full learning history with scores, levels, and topics across all your sessions.</p>
-      </div>
+        <p>Full session history with scores, levels, and topic coverage across all your learning sessions.</p>
+      </article>
     </div>
   </section>
 
-  <section class="how-it-works" id="how-it-works">
+  <!-- ══════════════════════════════════════════
+       HOW IT WORKS
+  ══════════════════════════════════════════ -->
+  <section class="how-it-works" id="how-it-works" aria-labelledby="hiw-heading" style="position:relative; z-index:1;">
     <div class="section-header">
       <div class="section-label">Process</div>
-      <h2>From Topic to Mastery in Minutes</h2>
+      <h2 id="hiw-heading">From Topic to Mastery<br /><span class="gradient-text">in Minutes</span></h2>
     </div>
-    <div class="steps">
-      <div class="step">
-        <div class="step-num">01</div>
-        <div class="step-content">
-          <h3>Enter a Topic</h3>
-          <p>Type any subject — from Quantum Physics to React Hooks.</p>
-        </div>
+
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="section-num">01</div>
+        <div class="step-icon" aria-hidden="true">✏️</div>
+        <h3 style="font-family:var(--font-display);font-weight:700;margin-bottom:10px;font-size:1.1rem;">Enter a Topic
+        </h3>
+        <p style="color:var(--color-text-muted);font-size:0.93rem;line-height:1.65;">
+          Type any subject — from Quantum Physics to React Hooks to Byzantine History.
+        </p>
       </div>
-      <div class="step-arrow">→</div>
-      <div class="step">
-        <div class="step-num">02</div>
-        <div class="step-content">
-          <h3>Take the Quiz</h3>
-          <p>AI generates a 10-question diagnostic quiz instantly.</p>
-        </div>
+      <div class="step-card">
+        <div class="section-num">02</div>
+        <div class="step-icon" aria-hidden="true">🎯</div>
+        <h3 style="font-family:var(--font-display);font-weight:700;margin-bottom:10px;font-size:1.1rem;">Take the Quiz
+        </h3>
+        <p style="color:var(--color-text-muted);font-size:0.93rem;line-height:1.65;">
+          AI instantly generates a 10-question diagnostic quiz tailored to your topic.
+        </p>
       </div>
-      <div class="step-arrow">→</div>
-      <div class="step">
-        <div class="step-num">03</div>
-        <div class="step-content">
-          <h3>Get Classified</h3>
-          <p>Your level is determined: Beginner, Intermediate, or Expert.</p>
-        </div>
+      <div class="step-card">
+        <div class="section-num">03</div>
+        <div class="step-icon" aria-hidden="true">📊</div>
+        <h3 style="font-family:var(--font-display);font-weight:700;margin-bottom:10px;font-size:1.1rem;">Get Classified
+        </h3>
+        <p style="color:var(--color-text-muted);font-size:0.93rem;line-height:1.65;">
+          Your level is determined: Beginner, Intermediate, or Expert — based on your score.
+        </p>
       </div>
-      <div class="step-arrow">→</div>
-      <div class="step">
-        <div class="step-num">04</div>
-        <div class="step-content">
-          <h3>Learn & Master</h3>
-          <p>Receive personalized materials, flashcards, and AI guidance.</p>
-        </div>
+      <div class="step-card">
+        <div class="section-num">04</div>
+        <div class="step-icon" aria-hidden="true">🚀</div>
+        <h3 style="font-family:var(--font-display);font-weight:700;margin-bottom:10px;font-size:1.1rem;">Learn &amp;
+          Master</h3>
+        <p style="color:var(--color-text-muted);font-size:0.93rem;line-height:1.65;">
+          Receive personalised materials, flashcards, AI coaching, and your next learning path.
+        </p>
       </div>
     </div>
   </section>
 
-  <section class="cta-section">
+  <!-- ══════════════════════════════════════════
+       CTA
+  ══════════════════════════════════════════ -->
+  <section class="cta-section" aria-labelledby="cta-heading" style="position:relative; z-index:1;">
     <div class="cta-inner">
-      <h2>Ready to learn anything?</h2>
-      <p>Join thousands of learners who use AI to study smarter.</p>
-      <a href="register.html" class="btn-primary btn-lg">Create Free Account</a>
+      <div class="section-label" style="margin:0 auto 20px;">Start Today — It's Free</div>
+      <h2 id="cta-heading"
+        style="font-family:var(--font-display);font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;margin-bottom:20px;">
+        Ready to learn <span class="gradient-text">anything</span>?
+      </h2>
+      <p
+        style="color:var(--color-text-muted);font-size:1.05rem;margin-bottom:40px;max-width:480px;margin-left:auto;margin-right:auto;line-height:1.7;">
+        Join thousands of learners who use AI to study smarter, faster, and with more confidence every single day.
+      </p>
+      <div class="cta-band" style="justify-content:center;">
+        <a href="register.html" class="btn-primary btn-lg" id="cta-primary" style="color:#fff">
+          Create Free Account →
+        </a>
+        <a href="login.html" class="btn-ghost btn-lg" id="cta-secondary">
+          Sign In
+        </a>
+      </div>
     </div>
   </section>
 
-  <footer class="footer">
+  <!-- ══════════════════════════════════════════
+       FOOTER
+  ══════════════════════════════════════════ -->
+  <footer class="footer" role="contentinfo" style="position:relative; z-index:1;">
     <div class="footer-inner">
-      <div class="nav-logo">
-        <img src="assets/nobgrobo.png" alt="Personalized Learning Assistant Logo" class="logo-img">
-        <span class="logo-text">Personalized Learning Assistant</span>
-      </div>
-      <p>Built with Gemini AI · FastAPI · Supabase</p>
+      <a href="index.html" class="nav-logo" style="text-decoration:none;">
+        <img src="assets/logo-p.svg" class="p-logo-mark" alt="P logo" aria-hidden="true" />
+        <span class="logo-text" style="color:var(--color-text);">Personalized Learning <span class="logo-text-accent">
+            AI</span></span>
+      </a>
+      <p>&copy; 2026 HCLTech Batch-5 · Personalized Learning AI</p>
     </div>
   </footer>
 
   <script src="js/utils.js"></script>
+  <script>
+    if ('scrollRestoration' in history) {
+      history.scrollRestoration = 'manual';
+    }
+    window.scrollTo(0, 0);
+  </script>
 </body>
+
 </html>

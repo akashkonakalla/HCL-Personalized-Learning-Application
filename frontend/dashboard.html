@@ -1,26 +1,193 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="icon" type="image/x-icon" href="assets/nobgrobo.png" />
-  <title>Dashboard</title>
+  <meta name="description" content="Your Personalized Learning AI dashboard — learn, quiz, and master any topic." />
+  <meta name="theme-color" content="#080E1A" />
+  <link rel="icon" type="image/svg+xml" href="assets/logo-p.svg" />
+  <title>Dashboard — Personalized Learning AI</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800;900&display=swap"
+    rel="stylesheet" />
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
   <link rel="stylesheet" href="css/components.css" />
   <link rel="stylesheet" href="css/dashboard.css" />
-</head>
-<body>
-  <div class="noise-overlay"></div>
+  <style>
+    /* ── Extended content tabs (scrollable) ── */
+    .content-tabs {
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
 
-  <!-- Sidebar -->
-  <aside class="sidebar" id="sidebar">
+    .content-tabs::-webkit-scrollbar {
+      display: none;
+    }
+
+    /* ── Journey progress strip ── */
+    .journey-strip {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      background: rgba(0, 0, 0, 0.2);
+      border-bottom: 1px solid var(--color-border);
+      padding: 0 40px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .journey-strip::-webkit-scrollbar {
+      display: none;
+    }
+
+    .journey-step {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 16px 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.3);
+      white-space: nowrap;
+      border-bottom: 2px solid transparent;
+      transition: 0.3s ease;
+      cursor: default;
+      flex-shrink: 0;
+    }
+
+    .journey-step.completed {
+      color: var(--color-success);
+      border-bottom-color: var(--color-success);
+      cursor: pointer;
+    }
+
+    .journey-step.active {
+      color: var(--color-primary-light);
+      border-bottom-color: var(--color-primary);
+      cursor: pointer;
+    }
+
+    .journey-step-icon {
+      font-size: 1rem;
+    }
+
+    .journey-sep {
+      color: rgba(255, 255, 255, 0.1);
+      font-size: 0.7rem;
+      flex-shrink: 0;
+    }
+
+    /* ── Sidebar step progress dots ── */
+    .sidebar-progress {
+      padding: 16px 16px 8px;
+    }
+
+    .sidebar-progress-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--color-text-muted);
+      margin-bottom: 12px;
+    }
+
+    .progress-dots {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .progress-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.1);
+      transition: 0.3s ease;
+    }
+
+    .progress-dot.done {
+      background: var(--color-success);
+      cursor: pointer;
+    }
+
+    .progress-dot.current {
+      background: var(--color-primary-light);
+      box-shadow: 0 0 8px var(--color-primary-light);
+      cursor: pointer;
+    }
+
+    /* ── Sidebar section divider ── */
+    .sidebar-divider {
+      height: 1px;
+      background: var(--color-border);
+      margin: 8px 0;
+    }
+
+    .sidebar-section-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: rgba(255, 255, 255, 0.2);
+      padding: 8px 16px 4px;
+    }
+
+    /* ── Topic badge in topbar ── */
+    .topic-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 5px 14px;
+      background: rgba(99, 102, 241, 0.1);
+      border: 1px solid rgba(99, 102, 241, 0.2);
+      border-radius: 100px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--color-primary-light);
+    }
+
+    .topic-badge-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--color-primary-light);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0.4;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="noise-overlay" aria-hidden="true"></div>
+
+  <!-- ════════════════════════════════════════
+       SIDEBAR
+  ════════════════════════════════════════ -->
+  <aside class="sidebar" id="sidebar" role="complementary" aria-label="Sidebar navigation">
+
+    <!-- P Letter Logo -->
     <div class="sidebar-logo">
-      <img src="assets/nobgrobo.png" alt="Personalized Learning AI" class="logo-img" />
-      <span class="logo-text">Personalized Learning AI</span>
+      <img src="assets/logo-p.svg" width="38" height="38" alt="P logo" aria-hidden="true" style="flex-shrink:0;" />
+      <span class="logo-text">Personalized Learning <span class="logo-text-accent"> AI</span></span>
     </div>
 
+    <!-- User chip -->
     <div class="sidebar-user" id="sidebar-user">
       <div class="user-avatar" id="user-avatar">?</div>
       <div class="user-info">
@@ -29,33 +196,62 @@
       </div>
     </div>
 
-    <nav class="sidebar-nav">
-      <a href="#" class="sidebar-link active" data-section="learn">
-        <span class="link-icon">📚</span>
+    <!-- Main nav -->
+    <div class="sidebar-section-label">Navigation</div>
+    <nav class="sidebar-nav" role="navigation" aria-label="Dashboard sections">
+      <a href="#" class="sidebar-link active" data-section="learn" id="nav-learn" aria-current="page">
+        <span class="link-icon" aria-hidden="true"><i class="ph ph-book-open-text"></i></span>
         <span>Learn</span>
       </a>
-      <a href="#" class="sidebar-link" data-section="history">
-        <span class="link-icon">📊</span>
+      <a href="#" class="sidebar-link" data-section="history" id="nav-history">
+        <span class="link-icon" aria-hidden="true"><i class="ph ph-clock-counter-clockwise"></i></span>
         <span>History</span>
       </a>
     </nav>
 
+    <!-- Learning journey progress -->
+    <div class="sidebar-divider"></div>
+    <div class="sidebar-progress" id="sidebar-progress" aria-label="Learning journey progress">
+      <div class="sidebar-progress-label">Journey Progress</div>
+      <div class="progress-dots" role="list">
+        <div class="progress-dot" data-dot="1" title="Topic" role="listitem"></div>
+        <div class="progress-dot" data-dot="2" title="Quiz" role="listitem"></div>
+        <div class="progress-dot" data-dot="3" title="Results" role="listitem"></div>
+        <div class="progress-dot" data-dot="4" title="Study Materials" role="listitem"></div>
+        <div class="progress-dot" data-dot="5" title="Flashcards" role="listitem"></div>
+        <div class="progress-dot" data-dot="6" title="Recommendations" role="listitem"></div>
+        <div class="progress-dot" data-dot="7" title="AI Tutor" role="listitem"></div>
+      </div>
+    </div>
+
+    <div class="sidebar-divider"></div>
+
+    <!-- Bottom -->
     <div class="sidebar-bottom">
-      <button class="sidebar-link" id="logout-btn">
-        <span class="link-icon">🚪</span>
+      <button class="sidebar-link" id="logout-btn" aria-label="Sign out">
+        <span class="link-icon" aria-hidden="true"><i class="ph ph-sign-out"></i></span>
         <span>Sign Out</span>
       </button>
     </div>
+
   </aside>
 
-  <!-- Main Content -->
-  <main class="main-content">
+  <!-- ════════════════════════════════════════
+       MAIN
+  ════════════════════════════════════════ -->
+  <main class="main-content" role="main">
 
-    <!-- Top Bar -->
-    <header class="topbar">
-      <button class="sidebar-toggle" id="sidebar-toggle">☰</button>
+    <!-- Topbar -->
+    <header class="topbar" role="banner">
+      <button class="sidebar-toggle" id="sidebar-toggle" aria-label="Toggle sidebar" aria-expanded="false"
+        aria-controls="sidebar">☰</button>
       <div class="topbar-title" id="topbar-title">Start Learning</div>
       <div class="topbar-right">
+        <!-- Active topic badge (shown when on a learning step) -->
+        <div class="topic-badge hidden" id="topic-badge">
+          <span class="topic-badge-dot" aria-hidden="true"></span>
+          <span id="topic-badge-text">Topic</span>
+        </div>
         <div class="user-chip" id="topbar-user">
           <div class="chip-avatar" id="chip-avatar">?</div>
           <span id="chip-name">...</span>
@@ -63,145 +259,183 @@
       </div>
     </header>
 
+    <!-- Journey progress strip (below topbar) -->
+    <div class="journey-strip" id="journey-strip" role="list" aria-label="Learning steps">
+      <div class="journey-step active" data-step="topic" role="listitem">
+        <span class="journey-step-icon"><i class="ph ph-target"></i></span> Topic
+      </div>
+      <span class="journey-sep" aria-hidden="true">›</span>
+      <div class="journey-step" data-step="quiz" role="listitem">
+        <span class="journey-step-icon"><i class="ph ph-check-square-offset"></i></span> Quiz
+      </div>
+      <span class="journey-sep" aria-hidden="true">›</span>
+      <div class="journey-step" data-step="results" role="listitem">
+        <span class="journey-step-icon"><i class="ph ph-chart-pie-slice"></i></span> Results
+      </div>
+      <span class="journey-sep" aria-hidden="true">›</span>
+      <div class="journey-step" data-step="content" role="listitem">
+        <span class="journey-step-icon"><i class="ph ph-book-open"></i></span> Study Materials
+      </div>
+      <span class="journey-sep" aria-hidden="true">›</span>
+      <div class="journey-step" data-step="flashcards" role="listitem">
+        <span class="journey-step-icon"><i class="ph ph-cards"></i></span> Flashcards
+      </div>
+      <span class="journey-sep" aria-hidden="true">›</span>
+      <div class="journey-step" data-step="recommendations" role="listitem">
+        <span class="journey-step-icon"><i class="ph ph-compass"></i></span> Recommendations
+      </div>
+      <span class="journey-sep" aria-hidden="true">›</span>
+      <div class="journey-step" data-step="agent" role="listitem">
+        <span class="journey-step-icon"><i class="ph ph-robot"></i></span> AI Tutor
+      </div>
+    </div>
+
     <!-- Global Loader -->
-    <div class="global-loader hidden" id="global-loader">
+    <div class="global-loader hidden" id="global-loader" role="status" aria-live="polite">
       <div class="loader-inner">
-        <div class="loader-spinner"></div>
+        <div class="loader-spinner" aria-hidden="true"></div>
         <div class="loader-text" id="loader-text">Generating with AI...</div>
       </div>
     </div>
 
-    <!-- ─────────────────────── STEP 1: Topic Input ─────────────────────── -->
-    <section class="step-section" id="step-topic" data-step="1">
+    <!-- ══════════════════════════════════════
+         STEP 1 — Topic Input
+    ══════════════════════════════════════ -->
+    <section class="step-section" id="step-topic" data-step="1" aria-label="Choose a topic">
+
       <div class="step-hero">
-        <div class="step-hero-bg">
+        <div class="step-hero-bg" aria-hidden="true">
           <div class="orb orb-1"></div>
           <div class="orb orb-2"></div>
         </div>
         <div class="step-hero-content">
-          <div class="step-badge">AI-Powered Learning</div>
-          <h1>What would you like to learn today?</h1>
-          <p>Enter any topic and our AI will diagnose your knowledge and create personalized materials just for you.</p>
+          <div class="step-badge">✦ AI-Powered Learning</div>
+          <h1>What would you like<br />to learn today?</h1>
+          <p>Enter any topic — our AI diagnoses your level and builds expert study materials tailored just for you.</p>
 
           <div class="topic-input-card">
             <div class="topic-input-wrapper">
-              <span class="topic-icon">🔍</span>
-              <input
-                type="text"
-                id="topic-input"
-                placeholder="e.g. Machine Learning, DNA Replication, Byzantine History..."
-                maxlength="100"
-              />
+              <span class="topic-icon" aria-hidden="true"><i class="ph ph-magnifying-glass"></i></span>
+              <input type="text" id="topic-input" placeholder="e.g. Machine Learning, DNA Replication, React Hooks…"
+                maxlength="100" aria-label="Topic to learn" autocomplete="off" />
             </div>
-            <button class="btn-primary btn-lg" id="start-learning-btn">
-              Start Learning →
-            </button>
+            <button class="btn-primary btn-lg" id="start-learning-btn">Start Learning →</button>
           </div>
 
-          <div class="topic-suggestions">
+          <div class="topic-suggestions" role="group" aria-label="Topic suggestions">
             <span class="suggestions-label">Try:</span>
-            <button class="suggestion-chip" data-topic="Machine Learning">Machine Learning</button>
-            <button class="suggestion-chip" data-topic="Quantum Physics">Quantum Physics</button>
-            <button class="suggestion-chip" data-topic="JavaScript Promises">JavaScript Promises</button>
-            <button class="suggestion-chip" data-topic="World War II">World War II</button>
-            <button class="suggestion-chip" data-topic="Photosynthesis">Photosynthesis</button>
+            <button class="suggestion-chip" data-topic="Machine Learning" type="button">Machine Learning</button>
+            <button class="suggestion-chip" data-topic="Quantum Physics" type="button">Quantum Physics</button>
+            <button class="suggestion-chip" data-topic="JavaScript Promises" type="button">JavaScript Promises</button>
+            <button class="suggestion-chip" data-topic="World War II" type="button">World War II</button>
+            <button class="suggestion-chip" data-topic="Photosynthesis" type="button">Photosynthesis</button>
           </div>
         </div>
       </div>
 
-      <!-- Recent history preview -->
       <div class="recent-section" id="recent-section">
         <h2 class="section-title">Recent Sessions</h2>
-        <div class="history-grid" id="recent-history-grid">
-          <div class="history-skeleton"></div>
-          <div class="history-skeleton"></div>
-          <div class="history-skeleton"></div>
+        <div class="history-grid" id="recent-history-grid" role="list">
+          <div class="history-skeleton" aria-hidden="true"></div>
+          <div class="history-skeleton" aria-hidden="true"></div>
+          <div class="history-skeleton" aria-hidden="true"></div>
         </div>
       </div>
+
     </section>
 
-    <!-- ─────────────────────── STEP 2: Quiz ─────────────────────── -->
-    <section class="step-section hidden" id="step-quiz" data-step="2">
+    <!-- ══════════════════════════════════════
+         STEP 2 — Quiz
+    ══════════════════════════════════════ -->
+    <section class="step-section hidden" id="step-quiz" data-step="2" aria-label="Diagnostic quiz">
       <div class="section-header-row">
         <div>
           <div class="section-label" id="quiz-topic-label">Topic</div>
           <h2 class="section-title">Knowledge Diagnostic Quiz</h2>
-          <p class="section-desc">Answer all questions. Your level will be determined from your score.</p>
+          <p class="section-desc">Answer all questions. Your proficiency level is determined from your score.</p>
         </div>
-        <div class="quiz-progress-info">
+        <div class="quiz-progress-info" role="status" aria-live="polite">
           <div class="progress-circle" id="quiz-progress-circle">
             <span id="quiz-q-current">0</span>/<span id="quiz-q-total">10</span>
           </div>
         </div>
       </div>
 
-      <div class="quiz-container" id="quiz-container">
-        <!-- Questions rendered by quiz.js -->
-      </div>
+      <div class="quiz-container" id="quiz-container" role="list"></div>
 
       <div class="quiz-footer">
         <button class="btn-ghost" id="quiz-back-btn">← Back</button>
-        <button class="btn-primary btn-lg" id="submit-quiz-btn">
-          Submit Quiz →
-        </button>
+        <button class="btn-primary btn-lg" id="submit-quiz-btn">Submit Quiz →</button>
       </div>
     </section>
 
-    <!-- ─────────────────────── STEP 3: Results ─────────────────────── -->
-    <section class="step-section hidden" id="step-results" data-step="3">
+    <!-- ══════════════════════════════════════
+         STEP 3 — Results
+    ══════════════════════════════════════ -->
+    <section class="step-section hidden" id="step-results" data-step="3" aria-label="Quiz results">
       <div class="results-hero">
-        <div class="results-score-ring" id="results-score-ring">
-          <svg viewBox="0 0 120 120">
+        <figure class="results-score-ring" id="results-score-ring" aria-label="Quiz score">
+          <svg viewBox="0 0 120 120" aria-hidden="true">
+            <defs>
+              <linearGradient id="ring-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" style="stop-color:#6366F1" />
+                <stop offset="100%" style="stop-color:#38BDF8" />
+              </linearGradient>
+            </defs>
             <circle class="ring-bg" cx="60" cy="60" r="52" />
-            <circle class="ring-fill" id="ring-fill" cx="60" cy="60" r="52"
-              stroke-dasharray="326.7" stroke-dashoffset="326.7" />
+            <circle class="ring-fill" id="ring-fill" cx="60" cy="60" r="52" stroke-dasharray="326.7"
+              stroke-dashoffset="326.7" />
           </svg>
           <div class="ring-text">
             <div class="ring-score" id="ring-score">0</div>
             <div class="ring-label">/ 10</div>
           </div>
-        </div>
+        </figure>
 
         <div class="results-info">
-          <div class="results-level-badge" id="results-level-badge">
-            <span class="level-emoji" id="results-level-emoji">🎯</span>
-            <span class="level-name" id="results-level-name">Loading...</span>
+          <div class="results-level-badge" id="results-level-badge" role="status">
+            <span class="level-emoji" id="results-level-emoji"><i class="ph ph-medal"></i></span>
+            <span class="level-name" id="results-level-name">Loading…</span>
           </div>
           <h2 id="results-heading">Diagnostic Complete</h2>
-          <p id="results-desc">Your personalized learning materials are being prepared.</p>
-          <button class="btn-primary btn-lg" id="generate-content-btn">
-            Generate My Study Materials →
-          </button>
+          <p id="results-desc">Your personalised learning materials are being prepared.</p>
+          <button class="btn-primary btn-lg" id="generate-content-btn">Generate My Study Materials →</button>
         </div>
       </div>
 
-      <div class="results-breakdown" id="results-breakdown">
-        <!-- Answer breakdown rendered by quiz.js -->
-      </div>
+      <div class="results-breakdown" id="results-breakdown"></div>
     </section>
 
-    <!-- ─────────────────────── STEP 4: Content ─────────────────────── -->
-    <section class="step-section hidden" id="step-content" data-step="4">
+    <!-- ══════════════════════════════════════
+         STEP 4 — Study Content (expanded tabs)
+    ══════════════════════════════════════ -->
+    <section class="step-section hidden" id="step-content" data-step="4" aria-label="Study materials">
       <div class="section-header-row">
         <div>
           <div class="section-label" id="content-level-label">Your Level</div>
           <h2 class="section-title" id="content-topic-title">Study Materials</h2>
         </div>
-        <div class="content-actions">
-          <button class="btn-ghost" id="download-pdf-btn">⬇ PDF</button>
-          <button class="btn-ghost" id="download-docx-btn">⬇ DOCX</button>
-          <button class="btn-ghost" id="download-md-btn">⬇ Markdown</button>
+        <div class="content-actions" role="group" aria-label="Download">
+          <span style="font-size:.9rem;font-weight:600;color:var(--color-text-muted);align-self:center;">Export →</span>
+          <button class="btn-ghost" id="download-pdf-btn" aria-label="Download PDF">⬇ PDF</button>
+          <button class="btn-ghost" id="download-docx-btn" aria-label="Download HTML">⬇ HTML</button>
+          <button class="btn-ghost" id="download-md-btn" aria-label="Download Markdown">⬇ Markdown</button>
         </div>
       </div>
 
-      <div class="content-tabs">
-        <button class="content-tab active" data-tab="summary">Summary</button>
-        <button class="content-tab" data-tab="concepts">Key Concepts</button>
-        <button class="content-tab" data-tab="details">Deep Dive</button>
+      <!-- Extended content tabs -->
+      <div class="content-tabs" role="tablist" aria-label="Study content sections">
+        <button class="content-tab active" data-tab="summary" role="tab" aria-selected="true" id="tab-summary"><i class="ph ph-list-dashes"></i> Summary</button>
+        <button class="content-tab" data-tab="concepts" role="tab" aria-selected="false" id="tab-concepts"><i class="ph ph-lightbulb"></i> Key Concepts</button>
+        <button class="content-tab" data-tab="details" role="tab" aria-selected="false" id="tab-details"><i class="ph ph-microscope"></i> Deep Dive</button>
+        <button class="content-tab" data-tab="real_world" role="tab" aria-selected="false" id="tab-real-world"><i class="ph ph-globe"></i> Real World</button>
+        <button class="content-tab" data-tab="interview" role="tab" aria-selected="false" id="tab-interview"><i class="ph ph-microphone-stage"></i> Viva Voice</button>
+        <button class="content-tab" data-tab="best_practices" role="tab" aria-selected="false" id="tab-best-practices"><i class="ph ph-check-circle"></i> Best Practices</button>
+        <button class="content-tab" data-tab="roadmap" role="tab" aria-selected="false" id="tab-roadmap"><i class="ph ph-map-pin-line"></i> Roadmap</button>
       </div>
 
-      <div class="content-body" id="content-body">
-        <!-- Content rendered by content.js -->
+      <div class="content-body" id="content-body" role="tabpanel" aria-labelledby="tab-summary">
+        <!-- Rendered by content.js -->
       </div>
 
       <div class="content-nav">
@@ -210,38 +444,40 @@
       </div>
     </section>
 
-    <!-- ─────────────────────── STEP 5: Flashcards ─────────────────────── -->
-    <section class="step-section hidden" id="step-flashcards" data-step="5">
+    <!-- ══════════════════════════════════════
+         STEP 5 — Flashcards
+    ══════════════════════════════════════ -->
+    <section class="step-section hidden" id="step-flashcards" data-step="5" aria-label="Flashcards">
       <div class="section-header-row">
         <div>
           <div class="section-label">Active Recall</div>
           <h2 class="section-title">Flashcards</h2>
-          <p class="section-desc">Click a card to reveal the answer. Navigate with the arrows.</p>
+          <p class="section-desc">Click a card to reveal the answer. Use arrow keys or buttons to navigate.</p>
         </div>
-        <div class="flashcard-counter">
+        <div class="flashcard-counter" role="status" aria-live="polite">
           <span id="fc-current">1</span> / <span id="fc-total">?</span>
         </div>
       </div>
 
       <div class="flashcard-stage" id="flashcard-stage">
-        <div class="flashcard" id="flashcard">
+        <div class="flashcard" id="flashcard" role="button" tabindex="0" aria-label="Flashcard — click to flip">
           <div class="flashcard-inner" id="flashcard-inner">
             <div class="flashcard-front" id="fc-front">
               <div class="fc-label">Question</div>
-              <div class="fc-text" id="fc-question-text">Loading...</div>
+              <div class="fc-text" id="fc-question-text">Loading…</div>
             </div>
             <div class="flashcard-back" id="fc-back">
               <div class="fc-label">Answer</div>
-              <div class="fc-text" id="fc-answer-text">Loading...</div>
+              <div class="fc-text" id="fc-answer-text">Loading…</div>
             </div>
           </div>
         </div>
       </div>
 
-      <div class="flashcard-controls">
-        <button class="btn-ghost" id="fc-prev-btn">← Prev</button>
-        <button class="btn-outline" id="fc-flip-btn">Flip Card</button>
-        <button class="btn-ghost" id="fc-next-btn">Next →</button>
+      <div class="flashcard-controls" role="group" aria-label="Card navigation">
+        <button class="btn-ghost" id="fc-prev-btn" aria-label="Previous card">← Prev</button>
+        <button class="btn-outline" id="fc-flip-btn" aria-label="Flip card">Flip Card</button>
+        <button class="btn-ghost" id="fc-next-btn" aria-label="Next card">Next →</button>
       </div>
 
       <div class="content-nav">
@@ -250,43 +486,45 @@
       </div>
     </section>
 
-    <!-- ─────────────────────── STEP 6: Recommendations ─────────────────────── -->
-    <section class="step-section hidden" id="step-recommendations" data-step="6">
+    <!-- ══════════════════════════════════════
+         STEP 6 — Recommendations
+    ══════════════════════════════════════ -->
+    <section class="step-section hidden" id="step-recommendations" data-step="6" aria-label="Recommendations">
       <div class="section-header-row">
         <div>
           <div class="section-label">What's Next</div>
-          <h2 class="section-title">Personalized Recommendations</h2>
-          <p class="section-desc">Based on your quiz performance and current level.</p>
+          <h2 class="section-title">Personalised Recommendations</h2>
+          <p class="section-desc">Based on your quiz performance and current knowledge level.</p>
         </div>
       </div>
 
-      <div class="recommendations-grid" id="recommendations-grid">
-        <!-- Rendered by recommendations.js -->
-      </div>
+      <div class="recommendations-grid" id="recommendations-grid" role="list"></div>
 
       <div class="content-nav">
         <button class="btn-ghost" id="recs-back-btn">← Back to Flashcards</button>
-        <button class="btn-primary btn-lg" id="show-agent-btn">AI Suggestions →</button>
+        <button class="btn-primary btn-lg" id="show-agent-btn">AI Tutor →</button>
       </div>
     </section>
 
-    <!-- ─────────────────────── STEP 7: AI Agent ─────────────────────── -->
-    <section class="step-section hidden" id="step-agent" data-step="7">
+    <!-- ══════════════════════════════════════
+         STEP 7 — AI Agent / Tutor Chat
+    ══════════════════════════════════════ -->
+    <section class="step-section hidden" id="step-agent" data-step="7" aria-label="AI tutor chat">
       <div class="section-header-row">
         <div>
           <div class="section-label">Agentic AI</div>
           <h2 class="section-title">Your Personal AI Tutor</h2>
-          <p class="section-desc">Your AI has analyzed your performance and has personalized guidance for you.</p>
+          <p class="section-desc">Your AI has analysed your performance and has personalised guidance ready.</p>
         </div>
       </div>
 
-      <div class="agent-chat" id="agent-chat">
-        <!-- Rendered by dashboard.js -->
-      </div>
+      <div class="agent-chat" id="agent-chat" role="log" aria-live="polite"></div>
 
       <div class="agent-input-area">
         <div class="agent-input-wrapper">
-          <input type="text" id="agent-input" placeholder="Ask your AI tutor anything about this topic..." />
+          <label for="agent-input" class="hidden">Ask your AI tutor</label>
+          <input type="text" id="agent-input" placeholder="Ask anything about this topic…" autocomplete="off"
+            aria-label="Question for AI tutor" />
           <button class="btn-primary" id="agent-send-btn">Send</button>
         </div>
       </div>
@@ -297,27 +535,29 @@
       </div>
     </section>
 
-    <!-- ─────────────────────── History Section ─────────────────────── -->
-    <section class="step-section hidden" id="section-history" data-step="history">
+    <!-- ══════════════════════════════════════
+         HISTORY
+    ══════════════════════════════════════ -->
+    <section class="step-section hidden" id="section-history" data-step="history" aria-label="Learning history">
       <div class="section-header-row">
         <div>
           <div class="section-label">Your Progress</div>
           <h2 class="section-title">Learning History</h2>
+          <p class="section-desc">A full record of every topic you've studied and your quiz scores.</p>
         </div>
       </div>
+
       <div class="history-table-wrapper">
-        <table class="history-table" id="history-table">
+        <table class="history-table" id="history-table" aria-label="Learning sessions">
           <thead>
             <tr>
-              <th>Topic</th>
-              <th>Score</th>
-              <th>Level</th>
-              <th>Date</th>
+              <th scope="col">Topic</th>
+              <th scope="col">Score</th>
+              <th scope="col">Level</th>
+              <th scope="col">Date</th>
             </tr>
           </thead>
-          <tbody id="history-tbody">
-            <!-- Rendered by dashboard.js -->
-          </tbody>
+          <tbody id="history-tbody"></tbody>
         </table>
       </div>
     </section>
@@ -332,5 +572,12 @@
   <script src="js/flashcards.js"></script>
   <script src="js/recommendations.js"></script>
   <script src="js/dashboard.js"></script>
+  <script>
+    if ('scrollRestoration' in history) {
+      history.scrollRestoration = 'manual';
+    }
+    window.scrollTo(0, 0);
+  </script>
 </body>
+
 </html>

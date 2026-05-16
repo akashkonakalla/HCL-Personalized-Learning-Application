@@ -38,7 +38,7 @@ const Auth = (() => {
   function logout() {
     localStorage.removeItem(TOKEN_KEY);
     localStorage.removeItem(USER_KEY);
-    window.location.href = 'login.html';
+    window.location.href = 'index.html';
   }
 
   // ─── Auth Guard ───

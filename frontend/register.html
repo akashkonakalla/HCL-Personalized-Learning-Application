@@ -1,144 +1,188 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+  <script>if ('scrollRestoration' in history) history.scrollRestoration = 'manual';</script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="icon" type="image/x-icon" href="assets/nobgrobo.png" />
-  <title>Create Account - Personalized Learning AI</title>
+  <meta name="description"
+    content="Create your free Personalized Learning AI account — adaptive AI tutoring for any topic." />
+  <meta name="theme-color" content="#0F172A" />
+  <link rel="icon" type="image/svg+xml" href="assets/logo-p.svg" />
+  <title>Create Account — Personalized Learning AI</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800;900&display=swap"
+    rel="stylesheet" />
   <link rel="stylesheet" href="css/auth.css" />
 </head>
+
 <body>
-  <div class="noise-overlay"></div>
-  <div class="auth-bg">
+
+  <div class="noise-overlay" aria-hidden="true"></div>
+  <div class="auth-bg" aria-hidden="true">
     <div class="orb orb-1"></div>
     <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
   </div>
 
-  <div class="auth-container">
+  <main class="auth-container" role="main">
+
+    <!-- ── Left: Registration Form ── -->
     <div class="auth-card">
+
+      <!-- P Letter Logo -->
       <div class="auth-logo">
-        <a href="index.html">
-          <!-- <span class="logo-icon">⬡</span> -->
-           <img src="assets/nobgrobo.png" alt="Personalized Learning AI logo" class="logo-img" />
-          <span class="logo-text">Personalized Learning AI</span>
+        <a href="index.html" aria-label="Go to homepage">
+          <img src="assets/logo-p.svg" class="p-logo-sm" alt="Personalized AI Logo" aria-hidden="true" />
+          <span class="logo-text">Personalized Learning <span class="logo-text-accent"> AI</span></span>
         </a>
       </div>
 
-      <div class="auth-header">
+      <!-- Header -->
+      <header class="auth-header">
         <h1>Create your account</h1>
-        <p>Start your personalized learning journey today</p>
-      </div>
+        <p>Start your personalised AI learning journey today — it's free</p>
+      </header>
 
-      <div id="alert-box" class="alert hidden"></div>
+      <!-- Alert -->
+      <div id="alert-box" class="alert hidden" role="alert" aria-live="polite"></div>
 
-      <form id="register-form" class="auth-form" novalidate>
+      <!-- Form -->
+      <form id="register-form" class="auth-form" novalidate aria-label="Create account form">
+
         <div class="form-group">
           <label for="name">Full Name</label>
           <div class="input-wrapper">
-            <span class="input-icon">👤</span>
-            <input
-              type="text"
-              id="name"
-              name="name"
-              placeholder="Your full name"
-              required
-              autocomplete="name"
-            />
+            <span class="input-icon" aria-hidden="true">👤</span>
+            <input type="text" id="name" name="name" placeholder="Your full name" required autocomplete="name"
+              aria-describedby="name-error" aria-required="true" minlength="2" />
           </div>
-          <span class="field-error" id="name-error"></span>
+          <span class="field-error" id="name-error" role="alert"></span>
         </div>
 
         <div class="form-group">
-          <label for="email">Email</label>
+          <label for="email">Email address</label>
           <div class="input-wrapper">
-            <span class="input-icon">✉</span>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              placeholder="you@example.com"
-              required
-              autocomplete="email"
-            />
+            <span class="input-icon" aria-hidden="true">✉</span>
+            <input type="email" id="email" name="email" placeholder="you@example.com" required autocomplete="email"
+              aria-describedby="email-error" aria-required="true" />
           </div>
-          <span class="field-error" id="email-error"></span>
+          <span class="field-error" id="email-error" role="alert"></span>
         </div>
 
         <div class="form-group">
           <label for="password">Password</label>
           <div class="input-wrapper">
-            <span class="input-icon">🔒</span>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              placeholder="Min 8 characters"
-              required
-              autocomplete="new-password"
-            />
-            <button type="button" class="toggle-pw" id="toggle-pw" aria-label="Toggle password">👁</button>
+            <span class="input-icon" aria-hidden="true">🔒</span>
+            <input type="password" id="password" name="password" placeholder="Minimum 8 characters" required
+              autocomplete="new-password" aria-describedby="password-error" aria-required="true" minlength="8" />
+            <button type="button" class="toggle-pw" id="toggle-pw" aria-label="Show or hide password">👁</button>
           </div>
-          <span class="field-error" id="password-error"></span>
+          <span class="field-error" id="password-error" role="alert"></span>
         </div>
 
         <div class="form-group">
           <label for="confirm-password">Confirm Password</label>
           <div class="input-wrapper">
-            <span class="input-icon">🔒</span>
-            <input
-              type="password"
-              id="confirm-password"
-              name="confirm_password"
-              placeholder="Repeat password"
-              required
-              autocomplete="new-password"
-            />
+            <span class="input-icon" aria-hidden="true">🔐</span>
+            <input type="password" id="confirm-password" name="confirm_password" placeholder="Repeat your password"
+              required autocomplete="new-password" aria-describedby="confirm-password-error" aria-required="true" />
           </div>
-          <span class="field-error" id="confirm-password-error"></span>
+          <span class="field-error" id="confirm-password-error" role="alert"></span>
         </div>
 
-        <button type="submit" class="btn-primary btn-full" id="register-btn">
+        <button type="submit" class="btn-primary btn-full" id="register-btn" aria-label="Create account">
           <span class="btn-text">Create Account</span>
-          <span class="btn-spinner hidden" id="register-spinner">⟳</span>
+          <span class="btn-spinner hidden" id="register-spinner" aria-hidden="true">⟳</span>
         </button>
+
       </form>
 
-      <div class="auth-footer">
-        <p>Already have an account? <a href="login.html">Sign in</a></p>
-      </div>
+      <p class="auth-footer">
+        Already have an account? <a href="login.html" id="login-link">Sign in instead →</a>
+      </p>
     </div>
 
-    <div class="auth-side">
+    <!-- ── Right: Feature Walkthrough Panel ── -->
+    <aside class="auth-side" aria-label="How it works">
       <div class="auth-side-content">
+
         <h2>Your AI-Powered Tutor</h2>
-        <p>Personalized AI adapts to your knowledge level and delivers personalized content for any topic you want to master.</p>
-        <div class="side-steps">
-          <div class="side-step">
-            <div class="step-num">1</div>
-            <div>Enter any topic you want to learn</div>
+        <p>
+          Our adaptive AI diagnoses your exact knowledge level and delivers
+          expert-crafted content for any topic you want to master — completely
+          personalised to you.
+        </p>
+
+        <ol class="side-steps" role="list" aria-label="Platform steps">
+          <li class="side-step" role="listitem">
+            <div class="step-num" aria-hidden="true">1</div>
+            <span>Enter any topic you want to learn</span>
+          </li>
+          <li class="side-step" role="listitem">
+            <div class="step-num" aria-hidden="true">2</div>
+            <span>Take an AI-generated diagnostic quiz</span>
+          </li>
+          <li class="side-step" role="listitem">
+            <div class="step-num" aria-hidden="true">3</div>
+            <span>Get classified: Beginner, Intermediate, or Expert</span>
+          </li>
+          <li class="side-step" role="listitem">
+            <div class="step-num" aria-hidden="true">4</div>
+            <span>Receive full study materials, flashcards &amp; code examples</span>
+          </li>
+          <li class="side-step" role="listitem">
+            <div class="step-num" aria-hidden="true">5</div>
+            <span>Chat with your personal AI tutor anytime</span>
+          </li>
+        </ol>
+
+        <!-- Mini stat row -->
+        <div
+          style="display:flex;gap:24px;margin-top:36px;padding-top:28px;border-top:1px solid rgba(255,255,255,0.07);">
+          <div style="text-align:center;">
+            <div
+              style="font-family:var(--font-display);font-size:1.5rem;font-weight:800;background:var(--gradient-primary);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">
+              10K+</div>
+            <div style="font-size:0.78rem;color:var(--color-text-muted);font-weight:500;">Topics</div>
           </div>
-          <div class="side-step">
-            <div class="step-num">2</div>
-            <div>Take an AI-generated diagnostic quiz</div>
+          <div style="text-align:center;">
+            <div
+              style="font-family:var(--font-display);font-size:1.5rem;font-weight:800;background:var(--gradient-primary);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">
+              8</div>
+            <div style="font-size:0.78rem;color:var(--color-text-muted);font-weight:500;">Content Sections</div>
           </div>
-          <div class="side-step">
-            <div class="step-num">3</div>
-            <div>Receive personalized study materials</div>
-          </div>
-          <div class="side-step">
-            <div class="step-num">4</div>
-            <div>Get guided by your AI tutor</div>
+          <div style="text-align:center;">
+            <div
+              style="font-family:var(--font-display);font-size:1.5rem;font-weight:800;background:var(--gradient-primary);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">
+              AI</div>
+            <div style="font-size:0.78rem;color:var(--color-text-muted);font-weight:500;">Powered</div>
           </div>
         </div>
+
       </div>
-    </div>
-  </div>
+    </aside>
+
+  </main>
 
   <script src="js/utils.js"></script>
   <script src="js/api.js"></script>
   <script src="js/auth.js"></script>
+  <script>
+    // Force scroll to top on every load/refresh
+    document.addEventListener('DOMContentLoaded', function() {
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+    });
+    window.addEventListener('load', function() {
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+    });
+  </script>
 </body>
+
 </html>

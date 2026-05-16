@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none">
+  <defs>
+    <linearGradient id="pg1" x1="0" y1="0" x2="48" y2="48" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#6366F1"/>
+      <stop offset="55%" stop-color="#818CF8"/>
+      <stop offset="100%" stop-color="#38BDF8"/>
+    </linearGradient>
+    <linearGradient id="pg2" x1="0" y1="0" x2="48" y2="48" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#6366F1" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#38BDF8" stop-opacity="0.1"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="1.5" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <!-- Background rounded square -->
+  <rect width="48" height="48" rx="13" fill="url(#pg2)" stroke="url(#pg1)" stroke-width="1.2" stroke-opacity="0.5"/>
+  <!-- Letter P -->
+  <g filter="url(#glow)">
+    <!-- Vertical stem of P -->
+    <rect x="13" y="10" width="4.5" height="28" rx="2.2" fill="url(#pg1)"/>
+    <!-- Horizontal top of P -->
+    <path d="M13 10 Q17.5 10 21 10.5 Q28 11.5 29.5 14.5 Q31 17 31 20 Q31 23.5 29 25.5 Q26.5 28 21 28.5 Q18 28.8 17.5 28.8 L13 28.8" stroke="url(#pg1)" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    <!-- Inner curve fill of P bowl -->
+    <path d="M17.5 14 Q24 14 26.5 16.5 Q28 18.5 28 20 Q28 22 26 23.5 Q23.5 25 17.5 25" stroke="url(#pg1)" stroke-width="1.8" stroke-linecap="round" fill="none" stroke-opacity="0.4"/>
+  </g>
+</svg>
